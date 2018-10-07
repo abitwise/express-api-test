@@ -1,0 +1,5 @@
+# Ignore development and OS specific files
+.idea
+
+# Ignore node modules
+node_modules
