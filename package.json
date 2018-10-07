@@ -1,0 +1,39 @@
+{
+  "name": "express-api-test",
+  "version": "1.0.0",
+  "description": "Express.js API Testing Utility",
+  "main": "./lib/express-api-test.js",
+  "engines": {
+    "node": ">=6"
+  },
+  "scripts": {
+    "build": "npx babel ./src/express-api-test.js --out-file ./lib/express-api-test.js",
+    "test": "npx mocha --recursive --timeout 30000 ./test/*",
+    "coverage": "npx istanbul cover _mocha -- --recursive --timeout 30000 ./test/*"
+  },
+  "homepage": "https://github.com/abitwise/express-api-test#readme",
+  "keywords": [
+    "express",
+    "api",
+    "test",
+    "mock",
+    "stub",
+    "unit",
+    "router",
+    "mocha",
+    "sinon"
+  ],
+  "author": "Olger Oeselg (https://olgeroeselg.com)",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
+    "standard": "^12.0.1"
+  },
+  "dependencies": {
+    "chai": "^4.2.0"
+  }
+}

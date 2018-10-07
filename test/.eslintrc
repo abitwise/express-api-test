@@ -1,0 +1,19 @@
+{
+  "env": {
+    "es6": true
+  },
+  "extends": [
+    "standard",
+    "standard-jsx"
+  ],
+  "globals": {
+    "describe": true,
+    "it": true,
+    "before": true,
+    "beforeEach": true,
+    "after": true,
+    "afterEach": true,
+    "expect": true,
+    "sandbox": true
+  }
+}
