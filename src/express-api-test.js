@@ -105,7 +105,7 @@ fn.setBody = function (body) {
 }
 
 /**
- * Set expected response, will be compared with deep.equal
+ * Set expected response
  *
  * @param expectedJson
  * @returns {ApiTest}
@@ -173,11 +173,11 @@ fn.expectEnd = function () {
 }
 
 /**
- * Initiate api call (use last)
+ * Run to initiate api call and assertions
  *
  * @returns {Promise.<*>}
  */
-fn.call = function () {
+fn.run = function () {
   this.api(this.req, this.res)
 
   return Promise.all(this.called)
