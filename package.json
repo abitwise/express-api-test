@@ -9,7 +9,7 @@
   "scripts": {
     "build": "npx babel ./src/express-api-test.js --out-file ./lib/express-api-test.js",
     "test": "npx mocha --recursive --timeout 30000 ./test/loader.js ./test/*.test.js",
-    "coverage": "npx istanbul cover _mocha -- --recursive --timeout 30000 ./test/loader.js ./test/*"
+    "coverage": "npx istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive --timeout 30000 ./test/loader.js ./test/*.test.js"
   },
   "homepage": "https://github.com/abitwise/express-api-test#readme",
   "keywords": [
