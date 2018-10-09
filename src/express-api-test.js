@@ -46,6 +46,7 @@ let fn = ApiTest.prototype
  */
 fn.setAppMock = function (appMock) {
   this.req.app = appMock
+  this.res.app = appMock
 
   return this
 }

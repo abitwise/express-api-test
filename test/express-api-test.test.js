@@ -9,7 +9,7 @@ const ApiTest = require('../src/express-api-test')
 
 describe('ApiTest', () => {
   [
-    { method: 'setAppMock', value: sandbox.stub(), expectedSetParameter: 'req.app' },
+    { method: 'setAppMock', value: sandbox.stub(), expectedSetParameters: ['req.app', 'res.app'] },
     { method: 'setBaseUrl', value: '/api/v1', expectedSetParameter: 'req.baseUrl' },
     { method: 'setBody', value: { test: '123' }, expectedSetParameter: 'req.body' },
     { method: 'setCookies', value: { cookie: 'test' }, expectedSetParameter: 'req.cookies' },
@@ -44,8 +44,18 @@ describe('ApiTest', () => {
         await expect(test).to.have.property(unitTest.method).which.is.a('function')
         test[unitTest.method](unitTest.value)
 
-        let actualValue = _.get(test, unitTest.expectedSetParameter)
-        await expect(actualValue).to.deep.equal(unitTest.value)
+        if (unitTest.hasOwnProperty('expectedSetParameter')) {
+          let actualValue = _.get(test, unitTest.expectedSetParameter)
+          await expect(actualValue).to.deep.equal(unitTest.value)
+        }
+
+        if (unitTest.hasOwnProperty('expectedSetParameters')) {
+          unitTest.expectedSetParameters.forEach(expectedSetParameter => {
+            let actualValue = _.get(test, expectedSetParameter)
+
+            return expect(actualValue).to.deep.equal(unitTest.value)
+          })
+        }
       })
     })
   })
