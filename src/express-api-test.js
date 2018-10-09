@@ -62,6 +62,22 @@ fn.setBaseUrl = function (baseUrl) {
 }
 
 /**
+ * Set body parameters (submitted/posted)
+ * Example:
+ *   {
+ *     username: 'bob',
+ *     type: 'investor'
+ *   }
+ * @param {Object} body
+ * @returns {ApiTest}
+ */
+fn.setBody = function (body) {
+  this.req.body = body
+
+  return this
+}
+
+/**
  * Set cookies
  * Example:
  * For cookie: name=value
@@ -102,6 +118,50 @@ fn.setHostname = function (hostname) {
 }
 
 /**
+ * Set ip
+ * @param {string} ip
+ * @returns {ApiTest}
+ */
+fn.setIp = function (ip) {
+  this.req.ip = ip
+
+  return this
+}
+
+/**
+ * Set ips
+ * @param {string[]} ips
+ * @returns {ApiTest}
+ */
+fn.setIps = function (ips) {
+  this.req.ips = ips
+
+  return this
+}
+
+/**
+ * Set method
+ * @param {string} method
+ * @returns {ApiTest}
+ */
+fn.setMethod = function (method) {
+  this.req.method = method
+
+  return this
+}
+
+/**
+ * Set original url
+ * @param {string} originalUrl
+ * @returns {ApiTest}
+ */
+fn.setOriginalUrl = function (originalUrl) {
+  this.req.originalUrl = originalUrl
+
+  return this
+}
+
+/**
  * Set request parameters
  * Example:
  * For: /user/:uid/photos/:file
@@ -131,6 +191,28 @@ fn.setParams = function (params) {
 }
 
 /**
+ * Set path
+ * @param {string} path
+ * @returns {ApiTest}
+ */
+fn.setPath = function (path) {
+  this.req.path = path
+
+  return this
+}
+
+/**
+ * Set protocol
+ * @param {string} protocol
+ * @returns {ApiTest}
+ */
+fn.setProtocol = function (protocol) {
+  this.req.protocol = protocol
+
+  return this
+}
+
+/**
  * Set query parameters
  * Example:
  * For /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
@@ -152,17 +234,67 @@ fn.setQuery = function (query) {
 }
 
 /**
- * Set body parameters (submitted/posted)
- * Example:
- *   {
- *     username: 'bob',
- *     type: 'investor'
- *   }
- * @param {Object} body
+ * Set route
+ * @param {Object} route
  * @returns {ApiTest}
  */
-fn.setBody = function (body) {
-  this.req.body = body
+fn.setRoute = function (route) {
+  this.req.route = route
+
+  return this
+}
+
+/**
+ * Set secure
+ * @param {boolean} secure
+ * @returns {ApiTest}
+ */
+fn.setSecure = function (secure) {
+  this.req.secure = secure
+
+  return this
+}
+
+/**
+ * Set signed cookies
+ * @param {Object} signedCookies
+ * @returns {ApiTest}
+ */
+fn.setSignedCookies = function (signedCookies) {
+  this.req.signedCookies = signedCookies
+
+  return this
+}
+
+/**
+ * Set stale
+ * @param {boolean} stale
+ * @returns {ApiTest}
+ */
+fn.setStale = function (stale) {
+  this.req.stale = stale
+
+  return this
+}
+
+/**
+ * Set subdomains
+ * @param {string[]} subdomains
+ * @returns {ApiTest}
+ */
+fn.setSubdomains = function (subdomains) {
+  this.req.subdomains = subdomains
+
+  return this
+}
+
+/**
+ * Set xhr
+ * @param {boolean} xhr
+ * @returns {ApiTest}
+ */
+fn.setXhr = function (xhr) {
+  this.req.xhr = xhr
 
   return this
 }

@@ -11,11 +11,31 @@ describe('ApiTest', () => {
   [
     { method: 'setAppMock', value: sandbox.stub(), expectedSetParameter: 'req.app' },
     { method: 'setBaseUrl', value: '/api/v1', expectedSetParameter: 'req.baseUrl' },
-    { method: 'setQuery', value: { test: '123' }, expectedSetParameter: 'req.query' },
     { method: 'setBody', value: { test: '123' }, expectedSetParameter: 'req.body' },
     { method: 'setCookies', value: { cookie: 'test' }, expectedSetParameter: 'req.cookies' },
     { method: 'setFresh', value: true, expectedSetParameter: 'req.fresh' },
-    { method: 'setHostname', value: 'example.com', expectedSetParameter: 'req.hostname' }
+    { method: 'setHostname', value: 'example.com', expectedSetParameter: 'req.hostname' },
+    { method: 'setIp', value: '192.168.0.1', expectedSetParameter: 'req.ip' },
+    { method: 'setIps', value: ['192.168.0.1', '127.0.0.1'], expectedSetParameter: 'req.ips' },
+    { method: 'setMethod', value: 'GET', expectedSetParameter: 'req.method' },
+    { method: 'setOriginalUrl', value: '/hello', expectedSetParameter: 'req.originalUrl' },
+    { method: 'setPath', value: '/hello', expectedSetParameter: 'req.path' },
+    { method: 'setProtocol', value: 'http', expectedSetParameter: 'req.protocol' },
+    { method: 'setQuery', value: { test: '123' }, expectedSetParameter: 'req.query' },
+    {
+      method: 'setRoute',
+      value: { path: '/hello', stack: [{}], methods: { get: true } },
+      expectedSetParameter: 'req.route'
+    },
+    { method: 'setSecure', value: false, expectedSetParameter: 'req.secure' },
+    {
+      method: 'setSignedCookies',
+      value: { user: 'tobi.CP7AWaXDfAKIRfH49dQzKJx7sKzzSoPq7/AcBBRVwlI3' },
+      expectedSetParameter: 'req.signedCookies'
+    },
+    { method: 'setStale', value: false, expectedSetParameter: 'req.stale' },
+    { method: 'setSubdomains', value: ['test', 'www'], expectedSetParameter: 'req.subdomains' },
+    { method: 'setXhr', value: true, expectedSetParameter: 'req.xhr' }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
       it(util.format('should set %s', unitTest.expectedSetParameter), async () => {
