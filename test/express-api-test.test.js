@@ -6,6 +6,16 @@ const testApi = require('./api')
 const ApiTest = require('../src/express-api-test')
 
 describe('ApiTest', () => {
+  describe('setAppMock', () => {
+    it('should set mock as req.app', () => {
+      let mock = sandbox.stub()
+      let test = new ApiTest(testApi.emptyApi)
+        .setAppMock(mock)
+
+      return expect(test.req.app).to.deep.equal(mock)
+    })
+  })
+
   describe('setParams', () => {
     it('should set req.params', () => {
       let params = { test: '123' }

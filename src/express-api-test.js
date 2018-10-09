@@ -39,6 +39,17 @@ let ApiTest = function (cb) {
 let fn = ApiTest.prototype
 
 /**
+ * Set mock for app parameter
+ *
+ * @param appMock
+ */
+fn.setAppMock = function (appMock) {
+  this.req.app = appMock
+
+  return this
+}
+
+/**
  * Set request parameters
  * Example:
  * For: /user/:uid/photos/:file
