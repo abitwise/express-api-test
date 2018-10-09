@@ -59,44 +59,27 @@ describe('ApiTest', () => {
       await expect(test.req.params).to.deep.equal(params)
       await expect(test.req.param('test')).to.deep.equal('123')
     })
-  })
+  });
 
-  describe('expectJson', () => {
-    it('should set res.json function and add wait promise', async () => {
-      let test = new ApiTest(testApi.apiWithParams)
-        .setParams({ test: '123' })
-        .expectJson({ result: '123' })
+  [
+    { method: 'expectJson', value: { result: '123' }, expectedSetParameter: 'res.json' },
+    { method: 'expectStatus', value: HttpStatus.OK, expectedSetParameter: 'res.status' },
+    { method: 'expectEnd', value: null, expectedSetParameter: 'res.end' }
+  ].forEach(unitTest => {
+    describe(unitTest.method, () => {
+      it(util.format('should set %s function and add wait promise', unitTest.expectedSetParameter), async () => {
+        let test = new ApiTest(testApi.apiWithParams)
+          .setParams({ test: '123' })
 
-      await expect(test.res.json).to.be.a('function')
-      await expect(test.called).to.be.an('array')
-      await expect(test.called.length).to.equal(1)
-      await expect(test.called[0]).to.be.a('promise')
-    })
-  })
+        test[unitTest.method](unitTest.value)
 
-  describe('expectStatus', () => {
-    it('should set res.status function and add wait promise', async () => {
-      let test = new ApiTest(testApi.apiWithParams)
-        .setParams({ test: '123' })
-        .expectStatus(HttpStatus.OK)
+        let expectedParameter = _.get(test, unitTest.expectedSetParameter)
 
-      await expect(test.res.status).to.be.a('function')
-      await expect(test.called).to.be.an('array')
-      await expect(test.called.length).to.equal(1)
-      await expect(test.called[0]).to.be.a('promise')
-    })
-  })
-
-  describe('expectEnd', () => {
-    it('should set res.end function and add wait promise', async () => {
-      let test = new ApiTest(testApi.apiWithParams)
-        .setParams({ test: '123' })
-        .expectEnd()
-
-      await expect(test.res.end).to.be.a('function')
-      await expect(test.called).to.be.an('array')
-      await expect(test.called.length).to.equal(1)
-      await expect(test.called[0]).to.be.a('promise')
+        await expect(expectedParameter).to.be.a('function')
+        await expect(test.called).to.be.an('array')
+        await expect(test.called.length).to.equal(1)
+        await expect(test.called[0]).to.be.a('promise')
+      })
     })
   })
 
