@@ -1,48 +1,43 @@
 'use strict'
 /* eslint-disable no-unused-expressions */
 
+const util = require('util')
+const _ = require('lodash')
 const HttpStatus = require('http-status')
 const testApi = require('./api')
 const ApiTest = require('../src/express-api-test')
 
 describe('ApiTest', () => {
-  describe('setAppMock', () => {
-    it('should set mock as req.app', () => {
-      let mock = sandbox.stub()
-      let test = new ApiTest(testApi.emptyApi)
-        .setAppMock(mock)
+  [
+    { method: 'setAppMock', value: sandbox.stub(), expectedSetParameter: 'req.app' },
+    { method: 'setBaseUrl', value: '/api/v1', expectedSetParameter: 'req.baseUrl' },
+    { method: 'setQuery', value: { test: '123' }, expectedSetParameter: 'req.query' },
+    { method: 'setBody', value: { test: '123' }, expectedSetParameter: 'req.body' },
+    { method: 'setCookies', value: { cookie: 'test' }, expectedSetParameter: 'req.cookies' },
+    { method: 'setFresh', value: true, expectedSetParameter: 'req.fresh' },
+    { method: 'setHostname', value: 'example.com', expectedSetParameter: 'req.hostname' }
+  ].forEach(unitTest => {
+    describe(unitTest.method, () => {
+      it(util.format('should set %s', unitTest.expectedSetParameter), async () => {
+        let test = new ApiTest(testApi.emptyApi)
 
-      return expect(test.req.app).to.deep.equal(mock)
+        await expect(test).to.have.property(unitTest.method).which.is.a('function')
+        test[unitTest.method](unitTest.value)
+
+        let actualValue = _.get(test, unitTest.expectedSetParameter)
+        await expect(actualValue).to.deep.equal(unitTest.value)
+      })
     })
   })
 
   describe('setParams', () => {
-    it('should set req.params', () => {
+    it('should set req.params', async () => {
       let params = { test: '123' }
       let test = new ApiTest(testApi.emptyApi)
         .setParams(params)
 
-      return expect(test.req.params).to.deep.equal(params)
-    })
-  })
-
-  describe('setQuery', () => {
-    it('should set req.query', () => {
-      let query = { test: '123' }
-      let test = new ApiTest(testApi.emptyApi)
-        .setQuery(query)
-
-      return expect(test.req.query).to.deep.equal(query)
-    })
-  })
-
-  describe('setBody', () => {
-    it('should set req.body', () => {
-      let body = { test: '123' }
-      let test = new ApiTest(testApi.emptyApi)
-        .setBody(body)
-
-      return expect(test.req.body).to.deep.equal(body)
+      await expect(test.req.params).to.deep.equal(params)
+      await expect(test.req.param('test')).to.deep.equal('123')
     })
   })
 

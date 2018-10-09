@@ -39,12 +39,64 @@ let ApiTest = function (cb) {
 let fn = ApiTest.prototype
 
 /**
- * Set mock for app parameter
+ * Set mock for app
  *
- * @param appMock
+ * @param {Object} appMock
+ * @returns {ApiTest}
  */
 fn.setAppMock = function (appMock) {
   this.req.app = appMock
+
+  return this
+}
+
+/**
+ * Set baseUrl
+ * @param {string} baseUrl
+ * @returns {ApiTest}
+ */
+fn.setBaseUrl = function (baseUrl) {
+  this.req.baseUrl = baseUrl
+
+  return this
+}
+
+/**
+ * Set cookies
+ * Example:
+ * For cookie: name=value
+ * Use:
+ * {
+ *   name: 'value'
+ * }
+ * @param {Object} cookies
+ * @returns {ApiTest}
+ */
+fn.setCookies = function (cookies) {
+  this.req.cookies = cookies
+
+  return this
+}
+
+/**
+ * Set fresh
+ *
+ * @param {boolean} fresh
+ * @returns {ApiTest}
+ */
+fn.setFresh = function (fresh) {
+  this.req.fresh = fresh
+
+  return this
+}
+
+/**
+ * Set hostname
+ * @param {string} hostname
+ * @returns {ApiTest}
+ */
+fn.setHostname = function (hostname) {
+  this.req.hostname = hostname
 
   return this
 }
@@ -59,7 +111,7 @@ fn.setAppMock = function (appMock) {
  *    file: 'file123'
  *  }
  *
- * @param {object} params
+ * @param {Object} params
  * @returns {ApiTest}
  */
 fn.setParams = function (params) {
@@ -90,7 +142,7 @@ fn.setParams = function (params) {
  *       type: 'converse'
  *     }
  *   }
- * @param {object} query
+ * @param {Object} query
  * @returns {ApiTest}
  */
 fn.setQuery = function (query) {
@@ -101,12 +153,12 @@ fn.setQuery = function (query) {
 
 /**
  * Set body parameters (submitted/posted)
- * Example use:
+ * Example:
  *   {
  *     username: 'bob',
  *     type: 'investor'
  *   }
- * @param {object} body
+ * @param {Object} body
  * @returns {ApiTest}
  */
 fn.setBody = function (body) {
