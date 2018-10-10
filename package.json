@@ -1,5 +1,5 @@
 {
-  "author": "Olger Oeselg (http://www.github.com/abitwise)",
+  "author": "Olger Oeselg <olger.oeselg@gmail.com> (http://www.github.com/abitwise)",
   "name": "express-api-test",
   "description": "Express.js API Testing Utility",
   "version": "1.0.0",
@@ -10,6 +10,7 @@
   "contributors": [
     {
       "name": "Olger Oeselg",
+      "email": "olger.oeselg@gmail.com",
       "url": "https://github.com/abitwise"
     }
   ],
