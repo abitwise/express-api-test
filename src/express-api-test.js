@@ -204,6 +204,7 @@ fn.setPath = function (path) {
 
 /**
  * Set protocol
+ *
  * @param {string} protocol
  * @returns {ApiTest}
  */
@@ -215,6 +216,7 @@ fn.setProtocol = function (protocol) {
 
 /**
  * Set query parameters
+ *
  * Example:
  * For /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
  * Use:
@@ -236,6 +238,7 @@ fn.setQuery = function (query) {
 
 /**
  * Set route
+ *
  * @param {Object} route
  * @returns {ApiTest}
  */
@@ -247,6 +250,7 @@ fn.setRoute = function (route) {
 
 /**
  * Set secure
+ *
  * @param {boolean} secure
  * @returns {ApiTest}
  */
@@ -258,6 +262,7 @@ fn.setSecure = function (secure) {
 
 /**
  * Set signed cookies
+ *
  * @param {Object} signedCookies
  * @returns {ApiTest}
  */
@@ -269,6 +274,7 @@ fn.setSignedCookies = function (signedCookies) {
 
 /**
  * Set stale
+ *
  * @param {boolean} stale
  * @returns {ApiTest}
  */
@@ -280,6 +286,7 @@ fn.setStale = function (stale) {
 
 /**
  * Set subdomains
+ *
  * @param {string[]} subdomains
  * @returns {ApiTest}
  */
@@ -291,6 +298,7 @@ fn.setSubdomains = function (subdomains) {
 
 /**
  * Set xhr
+ *
  * @param {boolean} xhr
  * @returns {ApiTest}
  */
@@ -301,7 +309,8 @@ fn.setXhr = function (xhr) {
 }
 
 /**
- * Set expected header field with value
+ * Expect appended header
+ *  - Can be used multiple times to expect multiple headers
  *
  * @param {string} expectedHeaderField
  * @param {*} expectedValue
@@ -332,7 +341,31 @@ fn.expectAppend = function (expectedHeaderField, expectedValue) {
 }
 
 /**
- * Set expected response
+ * Expect attachment
+ *
+ * @param {string} [expectedFilePath]
+ * @returns {ApiTest}
+ */
+fn.expectAttachment = function (expectedFilePath) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveAttachment = resolve
+    this.rejectAttachment = reject
+  }))
+
+  this.res.attachment = (filePath) => {
+    try {
+      expect(filePath).to.deep.equal(expectedFilePath)
+      this.resolveAttachment()
+    } catch (err) {
+      this.rejectAttachment(err)
+    }
+  }
+
+  return this
+}
+
+/**
+ * Expect json response
  *
  * @param expectedJson
  * @returns {ApiTest}
@@ -356,7 +389,7 @@ fn.expectJson = function (expectedJson) {
 }
 
 /**
- * Set expected status code
+ * Expect http status code
  *
  * @param expectedStatus
  * @returns {ApiTest}

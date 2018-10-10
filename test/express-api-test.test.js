@@ -72,17 +72,18 @@ describe('ApiTest', () => {
   });
 
   [
-    { method: 'expectJson', value: { result: '123' }, expectedSetParameter: 'res.json' },
-    { method: 'expectStatus', value: HttpStatus.OK, expectedSetParameter: 'res.status' },
-    { method: 'expectEnd', value: null, expectedSetParameter: 'res.end' },
+    { method: 'expectJson', value: { result: '123' }, expectedFunction: 'res.json' },
+    { method: 'expectStatus', value: HttpStatus.OK, expectedFunction: 'res.status' },
+    { method: 'expectEnd', value: null, expectedFunction: 'res.end' },
     {
       method: 'expectAppend',
       values: ['Link', ['<http://localhost/>', '<http://localhost:3000/>']],
-      expectedSetParameter: 'res.append'
-    }
+      expectedFunction: 'res.append'
+    },
+    { method: 'expectAttachment', value: 'path/to/file.jpg', expectedFunction: 'res.attachment' }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
-      it(util.format('should set %s function and add wait promise', unitTest.expectedSetParameter), async () => {
+      it(util.format('should set %s function and add wait promise', unitTest.expectedFunction), async () => {
         let test = new ApiTest(testApi.apiWithParams)
           .setParams({ test: '123' })
 
@@ -92,7 +93,7 @@ describe('ApiTest', () => {
           test[unitTest.method](unitTest.value)
         }
 
-        let expectedParameter = _.get(test, unitTest.expectedSetParameter)
+        let expectedParameter = _.get(test, unitTest.expectedFunction)
 
         await expect(expectedParameter).to.be.a('function')
         await expect(test.called).to.be.an('array')
