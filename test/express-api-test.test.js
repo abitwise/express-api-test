@@ -153,6 +153,12 @@ describe('ApiTest', () => {
         .run()
     })
 
+    it('should work with params and no expects', () => {
+      return new ApiTest(testApi.apiWithParams)
+        .setParams({ test: '123' })
+        .run()
+    })
+
     it('should work with query', () => {
       return new ApiTest(testApi.apiWithQuery)
         .setQuery({ test: '123' })

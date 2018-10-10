@@ -21,15 +21,29 @@ let ApiTest = function (cb) {
   this.api = cb
   this.called = []
   this.req = {}
-  this.res = {}
-  this.res.status = () => {
-    return {
-      'json': this.res.json,
-      'end': this.res.end
-    }
+  this.res = {
+    append: () => this.res,
+    attachment: () => this.res,
+    cookie: () => this.res,
+    clearCookie: () => this.res,
+    download: () => this.res,
+    end: () => this.res,
+    format: () => this.res,
+    get: () => this.res,
+    json: () => this.res,
+    jsonp: () => this.res,
+    links: () => this.res,
+    location: () => this.res,
+    redirect: () => this.res,
+    render: () => this.res,
+    send: () => this.res,
+    sendFile: () => this.res,
+    sendStatus: () => this.res,
+    set: () => this.res,
+    status: () => this.res,
+    type: () => this.res,
+    vary: () => this.res
   }
-  this.res.json = () => {}
-  this.res.end = () => {}
 
   this.setParams({})
 
