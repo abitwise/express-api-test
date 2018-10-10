@@ -82,7 +82,9 @@ describe('ApiTest', () => {
     },
     { method: 'expectAttachment', value: 'path/to/file.jpg', expectedFunction: 'res.attachment' },
     { method: 'expectCookie', values: ['name', 'tobi', { signed: true }], expectedFunction: 'res.cookie' },
-    { method: 'expectClearCookie', values: ['name', { path: '/admin' }], expectedFunction: 'res.clearCookie' }
+    { method: 'expectClearCookie', values: ['name', { path: '/admin' }], expectedFunction: 'res.clearCookie' },
+    { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunction: 'res.send' },
+    { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunction: 'res.sendFile' }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
       it(util.format('should set %s function and add wait promise', unitTest.expectedFunction), async () => {

@@ -467,6 +467,58 @@ fn.expectJson = function (expectedJson) {
 }
 
 /**
+ * Expect send
+ *
+ * @param {*} expectedValue
+ * @returns {ApiTest}
+ */
+fn.expectSend = function (expectedValue) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveSend = resolve
+    this.rejectSend = reject
+  }))
+
+  this.res.send = (value) => {
+    try {
+      expect(value).to.deep.equal(expectedValue)
+      this.resolveSend()
+    } catch (err) {
+      this.rejectSend(err)
+    }
+  }
+
+  return this
+}
+
+/**
+ * Expect sendFile
+ *
+ * @param {string} expectedPath
+ * @param {Object} [expectedOptions]
+ * @param {requestCallback} [expectedFn]
+ * @returns {ApiTest}
+ */
+fn.expectSendFile = function (expectedPath, expectedOptions, expectedFn) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveSendFile = resolve
+    this.rejectSendFile = reject
+  }))
+
+  this.res.sendFile = (path, options, fn) => {
+    try {
+      expect(path).to.equal(expectedPath)
+      expect(options).to.deep.equal(expectedOptions)
+      expect(fn).to.deep.equal(expectedFn)
+      this.resolveSendFile()
+    } catch (err) {
+      this.rejectSendFile(err)
+    }
+  }
+
+  return this
+}
+
+/**
  * Expect http status code
  *
  * @param expectedStatus
