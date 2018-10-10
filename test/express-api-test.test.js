@@ -81,7 +81,8 @@ describe('ApiTest', () => {
       expectedFunction: 'res.append'
     },
     { method: 'expectAttachment', value: 'path/to/file.jpg', expectedFunction: 'res.attachment' },
-    { method: 'expectCookie', values: ['name', 'tobi', { signed: true }], expectedFunction: 'res.cookie' }
+    { method: 'expectCookie', values: ['name', 'tobi', { signed: true }], expectedFunction: 'res.cookie' },
+    { method: 'expectClearCookie', values: ['name', { path: '/admin' }], expectedFunction: 'res.clearCookie' }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
       it(util.format('should set %s function and add wait promise', unitTest.expectedFunction), async () => {
@@ -131,6 +132,15 @@ describe('ApiTest', () => {
         .expectCookie('cart', { items: [1, 2, 3] })
         .expectCookie('rememberme', '1', { maxAge: 900000, httpOnly: true })
         .expectCookie('name', 'tobi', { domain: '.example.com', path: '/admin', secure: true })
+        .expectStatus(HttpStatus.OK)
+        .run()
+    })
+
+    it('should work with multiple clear-cookies', () => {
+      return new ApiTest(testApi.apiWithMultipleClearCookies)
+        .setParams({})
+        .expectClearCookie('rememberme')
+        .expectClearCookie('name', { path: '/admin' })
         .expectStatus(HttpStatus.OK)
         .run()
     })

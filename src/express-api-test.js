@@ -364,6 +364,15 @@ fn.expectAttachment = function (expectedFilePath) {
   return this
 }
 
+/**
+ * Expect that cookie was set
+ *  - Can be used many times to expect multiple cookies
+ *
+ * @param {string} expectedName
+ * @param {*} expectedValue
+ * @param {Object} [expectedOptions]
+ * @returns {ApiTest}
+ */
 fn.expectCookie = function (expectedName, expectedValue, expectedOptions) {
   this.called.push(new Promise((resolve, reject) => {
     this['resolveCookie_' + expectedName] = resolve
@@ -382,6 +391,37 @@ fn.expectCookie = function (expectedName, expectedValue, expectedOptions) {
       this['resolveCookie_' + name]()
     } catch (err) {
       this['rejectCookie_' + name](err)
+    }
+  }
+
+  return this
+}
+
+/**
+ * Expect that cookie was cleared
+ *  - Can be used many times to expect that multiple cookies were cleared
+ *
+ * @param {string} expectedName
+ * @param {Object} [expectedOptions]
+ * @returns {ApiTest}
+ */
+fn.expectClearCookie = function (expectedName, expectedOptions) {
+  this.called.push(new Promise((resolve, reject) => {
+    this['resolveClearCookie_' + expectedName] = resolve
+    this['rejectClearCookie_' + expectedName] = reject
+  }))
+
+  this['clearCookieExpects_' + expectedName] = (headerField, options) => {
+    expect(headerField).to.equal(expectedName)
+    expect(options).to.deep.equal(expectedOptions)
+  }
+
+  this.res.clearCookie = (name, options) => {
+    try {
+      this['clearCookieExpects_' + name](name, options)
+      this['resolveClearCookie_' + name]()
+    } catch (err) {
+      this['rejectClearCookie_' + name](err)
     }
   }
 

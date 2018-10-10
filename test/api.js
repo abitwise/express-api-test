@@ -8,7 +8,8 @@ module.exports = {
   apiWithQuery,
   apiWithBody,
   apiWithMultipleAppends,
-  apiWithMultipleCookies
+  apiWithMultipleCookies,
+  apiWithMultipleClearCookies
 }
 
 function emptyApi (req, res) {
@@ -38,6 +39,13 @@ function apiWithMultipleCookies (req, res) {
   res.cookie('cart', { items: [1, 2, 3] })
   res.cookie('rememberme', '1', { maxAge: 900000, httpOnly: true })
   res.cookie('name', 'tobi', { domain: '.example.com', path: '/admin', secure: true })
+
+  res.status(HttpStatus.OK).end()
+}
+
+function apiWithMultipleClearCookies (req, res) {
+  res.clearCookie('name', { path: '/admin' })
+  res.clearCookie('rememberme')
 
   res.status(HttpStatus.OK).end()
 }
