@@ -349,6 +349,8 @@ fn.expectAppend = function (expectedHeaderField, expectedValue) {
     } catch (err) {
       this['rejectAppend_' + headerField](err)
     }
+
+    return this.res
   }
 
   return this
@@ -373,6 +375,8 @@ fn.expectAttachment = function (expectedFilePath) {
     } catch (err) {
       this.rejectAttachment(err)
     }
+
+    return this.res
   }
 
   return this
@@ -406,6 +410,8 @@ fn.expectCookie = function (expectedName, expectedValue, expectedOptions) {
     } catch (err) {
       this['rejectCookie_' + name](err)
     }
+
+    return this.res
   }
 
   return this
@@ -437,6 +443,8 @@ fn.expectClearCookie = function (expectedName, expectedOptions) {
     } catch (err) {
       this['rejectClearCookie_' + name](err)
     }
+
+    return this.res
   }
 
   return this
@@ -461,6 +469,8 @@ fn.expectJson = function (expectedJson) {
     } catch (err) {
       this.rejectJson(err)
     }
+
+    return this.res
   }
 
   return this
@@ -485,6 +495,8 @@ fn.expectSend = function (expectedValue) {
     } catch (err) {
       this.rejectSend(err)
     }
+
+    return this.res
   }
 
   return this
@@ -513,6 +525,8 @@ fn.expectSendFile = function (expectedPath, expectedOptions, expectedFn) {
     } catch (err) {
       this.rejectSendFile(err)
     }
+
+    return this.res
   }
 
   return this
@@ -521,27 +535,50 @@ fn.expectSendFile = function (expectedPath, expectedOptions, expectedFn) {
 /**
  * Expect http status code
  *
- * @param expectedStatus
+ * @param expectedStatusCode
  * @returns {ApiTest}
  */
-fn.expectStatus = function (expectedStatus) {
+fn.expectSendStatus = function (expectedStatusCode) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveSendStatus = resolve
+    this.rejectSendStatus = reject
+  }))
+
+  this.res.sendStatus = (statusCode) => {
+    try {
+      expect(statusCode).to.be.equal(expectedStatusCode)
+      this.resolveSendStatus()
+    } catch (err) {
+      this.rejectSendStatus(err)
+    }
+
+    return this.res
+  }
+
+  return this
+}
+
+/**
+ * Expect http status code
+ *
+ * @param expectedStatusCode
+ * @returns {ApiTest}
+ */
+fn.expectStatus = function (expectedStatusCode) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveStatus = resolve
     this.rejectStatus = reject
   }))
 
-  this.res.status = (code) => {
+  this.res.status = (statusCode) => {
     try {
-      expect(code).to.be.equal(expectedStatus)
+      expect(statusCode).to.be.equal(expectedStatusCode)
       this.resolveStatus()
     } catch (err) {
       this.rejectStatus(err)
     }
 
-    return {
-      'json': this.res.json,
-      'end': this.res.end
-    }
+    return this.res
   }
 
   return this
@@ -557,6 +594,8 @@ fn.expectEnd = function () {
 
   this.res.end = () => {
     this.resolveEnd()
+
+    return this.res
   }
 
   return this
