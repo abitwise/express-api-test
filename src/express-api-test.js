@@ -301,6 +301,37 @@ fn.setXhr = function (xhr) {
 }
 
 /**
+ * Set expected header field with value
+ *
+ * @param {string} expectedHeaderField
+ * @param {*} expectedValue
+ *
+ * @returns {ApiTest}
+ */
+fn.expectAppend = function (expectedHeaderField, expectedValue) {
+  this.called.push(new Promise((resolve, reject) => {
+    this['resolveAppend_' + expectedHeaderField] = resolve
+    this['rejectAppend_' + expectedHeaderField] = reject
+  }))
+
+  this['appendExpects_' + expectedHeaderField] = (headerField, value) => {
+    expect(headerField).to.equal(expectedHeaderField)
+    expect(value).to.deep.equal(expectedValue)
+  }
+
+  this.res.append = (headerField, value) => {
+    try {
+      this['appendExpects_' + headerField](headerField, value)
+      this['resolveAppend_' + headerField]()
+    } catch (err) {
+      this['rejectAppend_' + headerField](err)
+    }
+  }
+
+  return this
+}
+
+/**
  * Set expected response
  *
  * @param expectedJson

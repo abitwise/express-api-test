@@ -74,14 +74,23 @@ describe('ApiTest', () => {
   [
     { method: 'expectJson', value: { result: '123' }, expectedSetParameter: 'res.json' },
     { method: 'expectStatus', value: HttpStatus.OK, expectedSetParameter: 'res.status' },
-    { method: 'expectEnd', value: null, expectedSetParameter: 'res.end' }
+    { method: 'expectEnd', value: null, expectedSetParameter: 'res.end' },
+    {
+      method: 'expectAppend',
+      values: ['Link', ['<http://localhost/>', '<http://localhost:3000/>']],
+      expectedSetParameter: 'res.append'
+    }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
       it(util.format('should set %s function and add wait promise', unitTest.expectedSetParameter), async () => {
         let test = new ApiTest(testApi.apiWithParams)
           .setParams({ test: '123' })
 
-        test[unitTest.method](unitTest.value)
+        if (unitTest.values) {
+          test[unitTest.method](...unitTest.values)
+        } else {
+          test[unitTest.method](unitTest.value)
+        }
 
         let expectedParameter = _.get(test, unitTest.expectedSetParameter)
 
@@ -102,6 +111,16 @@ describe('ApiTest', () => {
 
       await test.run()
       await expect(mockApi).to.have.been.calledWith(expectedReq, expectedRes)
+    })
+
+    it('should work with multiple appends', () => {
+      return new ApiTest(testApi.apiWithMultipleAppends)
+        .setParams({})
+        .expectAppend('Link', ['<http://localhost/>', '<http://localhost:3000/>'])
+        .expectAppend('Set-Cookie', 'foo=bar; Path=/; HttpOnly')
+        .expectAppend('Warning', '199 Miscellaneous warning')
+        .expectStatus(HttpStatus.OK)
+        .run()
     })
 
     it('should work with params', () => {
