@@ -7,7 +7,8 @@ module.exports = {
   apiWithParams,
   apiWithQuery,
   apiWithBody,
-  apiWithMultipleAppends
+  apiWithMultipleAppends,
+  apiWithMultipleCookies
 }
 
 function emptyApi (req, res) {
@@ -29,6 +30,14 @@ function apiWithMultipleAppends (req, res) {
   res.append('Link', ['<http://localhost/>', '<http://localhost:3000/>'])
   res.append('Set-Cookie', 'foo=bar; Path=/; HttpOnly')
   res.append('Warning', '199 Miscellaneous warning')
+
+  res.status(HttpStatus.OK).end()
+}
+
+function apiWithMultipleCookies (req, res) {
+  res.cookie('cart', { items: [1, 2, 3] })
+  res.cookie('rememberme', '1', { maxAge: 900000, httpOnly: true })
+  res.cookie('name', 'tobi', { domain: '.example.com', path: '/admin', secure: true })
 
   res.status(HttpStatus.OK).end()
 }

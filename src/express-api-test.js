@@ -364,6 +364,30 @@ fn.expectAttachment = function (expectedFilePath) {
   return this
 }
 
+fn.expectCookie = function (expectedName, expectedValue, expectedOptions) {
+  this.called.push(new Promise((resolve, reject) => {
+    this['resolveCookie_' + expectedName] = resolve
+    this['rejectCookie_' + expectedName] = reject
+  }))
+
+  this['cookieExpects_' + expectedName] = (headerField, value, options) => {
+    expect(headerField).to.equal(expectedName)
+    expect(value).to.deep.equal(expectedValue)
+    expect(options).to.deep.equal(expectedOptions)
+  }
+
+  this.res.cookie = (name, value, options) => {
+    try {
+      this['cookieExpects_' + name](name, value, options)
+      this['resolveCookie_' + name]()
+    } catch (err) {
+      this['rejectCookie_' + name](err)
+    }
+  }
+
+  return this
+}
+
 /**
  * Expect json response
  *
