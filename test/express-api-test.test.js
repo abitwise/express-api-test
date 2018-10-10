@@ -86,6 +86,8 @@ describe('ApiTest', () => {
     { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunction: 'res.send' },
     { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunction: 'res.sendFile' },
     { method: 'expectSendStatus', value: HttpStatus.OK, expectedFunction: 'res.sendStatus' },
+    { method: 'expectRedirect', values: [301, 'http://example.com'], expectedFunction: 'res.redirect' },
+    { method: 'expectRedirect', value: 'http://example.com', expectedFunction: 'res.redirect' }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
       it(util.format('should set %s function and add wait promise', unitTest.expectedFunction), async () => {

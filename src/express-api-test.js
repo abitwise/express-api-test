@@ -477,6 +477,38 @@ fn.expectJson = function (expectedJson) {
 }
 
 /**
+ * Expect redirect
+ *
+ * @param {number} [expectedStatus]
+ * @param {string} expectedPath
+ * @returns {ApiTest}
+ */
+fn.expectRedirect = function (expectedStatus, expectedPath) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveSend = resolve
+    this.rejectSend = reject
+  }))
+
+  this.res.redirect = (val1, val2) => {
+    try {
+      if (!expectedPath) {
+        expect(val1).to.equal(expectedStatus)
+      } else {
+        expect(val1).to.deep.equal(expectedStatus)
+        expect(val2).to.equal(expectedPath)
+      }
+      this.resolveSend()
+    } catch (err) {
+      this.rejectSend(err)
+    }
+
+    return this.res
+  }
+
+  return this
+}
+
+/**
  * Expect send
  *
  * @param {*} expectedValue
