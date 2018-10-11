@@ -229,6 +229,24 @@ fn.setProtocol = function (protocol) {
 }
 
 /**
+ * Set swagger params
+ *
+ * @param params
+ * @returns {ApiTest}
+ */
+fn.setSwaggerParams = function (params) {
+  this.req.swagger = {
+    params: {}
+  }
+
+  for (let key in params) {
+    this.req.swagger.params[key] = { value: params[key] }
+  }
+
+  return this
+}
+
+/**
  * Set query parameters
  *
  * Example:

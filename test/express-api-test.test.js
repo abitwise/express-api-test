@@ -69,6 +69,23 @@ describe('ApiTest', () => {
       await expect(test.req.params).to.deep.equal(params)
       await expect(test.req.param('test')).to.deep.equal('123')
     })
+  })
+
+  describe('setSwaggerParams', () => {
+    it('should set req.swagger.params', async () => {
+      let params = {
+        foo: 'bar',
+        numberFoo: 5
+      }
+
+      let test = new ApiTest(testApi.emptyApi)
+        .setSwaggerParams(params)
+
+      await expect(test.req.swagger).to.be.an('Object')
+      await expect(test.req.swagger.params).to.be.an('Object')
+      await expect(test.req.swagger.params.foo.value).to.equal(params.foo)
+      await expect(test.req.swagger.params.numberFoo.value).to.equal(params.numberFoo)
+    })
   });
 
   [
