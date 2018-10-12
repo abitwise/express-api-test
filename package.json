@@ -2,7 +2,7 @@
   "author": "Olger Oeselg <olger.oeselg@gmail.com> (http://www.github.com/abitwise)",
   "name": "express-api-test",
   "description": "Express.js API Testing Utility",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "homepage": "https://github.com/abitwise/express-api-test",
   "bugs": {
     "url": "https://github.com/abitwise/express-api-test/issues"
