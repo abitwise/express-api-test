@@ -20,9 +20,9 @@ Testing [express.js](https://expressjs.com) APIs is Easy Peasy with express-api-
 * Easily readable tests, easier to maintain
 * Will cover all the express.js request and response parameters and methods soon!
 
-## Documentation
+## API Documentation
 
-ApiTest documentation is [here in JSDoc.](https://github.com/abitwise/express-api-test/tree/master/docs/index.html)
+[ApiTest documentation](https://github.com/abitwise/express-api-test/tree/master/docs/API.md)
 
 ## Installation
 
@@ -36,7 +36,7 @@ $ npm i --save-dev express-api-test
 Examples:
 
 ```javascript
-const ApiTest = require('express-api-test)
+const ApiTest = require('express-api-test')
 
 describe('Food API', () => {
   describe('getFood', () => {
@@ -55,7 +55,7 @@ You can use express-api-test with [node-swagger](https://github.com/swagger-api/
 Example:
 
 ```javascript
-const ApiTest = require('express-api-test)
+const ApiTest = require('express-api-test')
 
 describe('Swagger Fruit API', () => {
   describe('getFruitBasket', () => {
