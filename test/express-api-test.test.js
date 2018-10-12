@@ -3,7 +3,7 @@
 
 const util = require('util')
 const _ = require('lodash')
-const HttpStatus = require('http-status')
+const HttpStatus = require('http-status-codes')
 const testApi = require('./api')
 const ApiTest = require('../src/express-api-test')
 
