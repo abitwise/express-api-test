@@ -2,7 +2,7 @@
   "author": "Olger Oeselg <olger.oeselg@gmail.com> (http://www.github.com/abitwise)",
   "name": "express-api-test",
   "description": "Express.js API Testing Utility",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "homepage": "https://github.com/abitwise/express-api-test",
   "bugs": {
     "url": "https://github.com/abitwise/express-api-test/issues"
@@ -57,7 +57,6 @@
     "test": "npx mocha --recursive --timeout 30000 ./test/loader.js ./test/*.test.js",
     "lint": "npx eslint src test",
     "coverage": "npx istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive --timeout 30000 ./test/loader.js ./test/*.test.js",
-    "update-docs": "npx jsdoc src/express-api-test.js --verbose --destination ./docs/",
     "docs": "npx jsdoc2md src/express-api-test.js > ./docs/API.md"
   },
   "files": [

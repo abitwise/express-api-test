@@ -5,7 +5,7 @@ const expect = require('chai').expect
 /**
  * Express.js API Testing Utility, helps to test API controllers made for Express.js 4.x
  * @example
- * const ApiTest = require('express-api-test)
+ * const ApiTest = require('express-api-test')
  *
  * describe('Food API', () => {
  *   describe('getFood', () => {
