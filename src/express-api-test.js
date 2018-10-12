@@ -20,7 +20,17 @@ const expect = require('chai').expect
 let ApiTest = function (cb) {
   this.api = cb
   this.called = []
-  this.req = {}
+  this.req = {
+    headers: {},
+    accepts: () => {},
+    acceptsCharsets: () => {},
+    acceptsEncodings: () => {},
+    acceptsLanguages: () => {},
+    get: () => {},
+    is: () => {},
+    param: () => {},
+    range: () => {}
+  }
   this.res = {
     append: () => this.res,
     attachment: () => this.res,
@@ -224,6 +234,24 @@ fn.setPath = function (path) {
  */
 fn.setProtocol = function (protocol) {
   this.req.protocol = protocol
+
+  return this
+}
+
+/**
+ * Set request headers which are used by req.get method
+ *
+ * @param headers
+ * @returns {ApiTest}
+ */
+fn.setRequestHeaders = function (headers) {
+  this.req.headers = {}
+
+  Object.entries(headers).map(pair => {
+    this.req.headers[pair[0].toLowerCase()] = pair[1]
+  })
+
+  this.req.get = (field) => this.req.headers[field.toLowerCase()]
 
   return this
 }

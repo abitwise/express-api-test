@@ -71,6 +71,28 @@ describe('ApiTest', () => {
     })
   })
 
+  describe('setRequestHeaders', () => {
+    it('should set req.header', async () => {
+      const headers = {
+        'Content-Type': 'text/plain',
+        'Something': 'nice'
+      }
+
+      let test = new ApiTest(testApi.emptyApi)
+        .setRequestHeaders(headers)
+
+      await expect(test.req.headers).to.deep.equals({
+        'content-type': 'text/plain',
+        'something': 'nice'
+      })
+
+      await expect(test.req.get('Content-Type')).to.equal('text/plain')
+      await expect(test.req.get('content-type')).to.equal('text/plain')
+      await expect(test.req.get('Something')).to.equal('nice')
+      await expect(test.req.get('something')).to.equal('nice')
+    })
+  })
+
   describe('setSwaggerParams', () => {
     it('should set req.swagger.params', async () => {
       let params = {
