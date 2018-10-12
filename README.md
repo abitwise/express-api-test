@@ -1,50 +1,70 @@
 # express-api-test
 
-Testing [express.js](https://expressjs.com) APIs is Easy Peasy with express-api-test.
-* No need to fiddle with the pesky req/res mocks.
+Fast unit testing for [express.js](https://expressjs.com) 4.x APIs
+
+```javascript
+it('should respond with Hello <name>', () => {
+  return new ApiTest(api.sayHello)
+    .setParams({ name: 'John' })
+    .expectStatus(200)
+    .expectSend('Hello John')
+    .run()
+})
+```
+
+Testing [express.js](https://expressjs.com) APIs is Easy Peasy with express-api-test
+* No need to fiddle with req/res mocks.
 * No need to write boilerplate asserts
-* Fluent-interface
+* No need to start http server, lightning-fast tests
+* Fluent-interface: helps with IDE auto-suggestions
+* Easily readable tests, easier to maintain
+* Will cover all the express.js request and response parameters and methods soon!
 
-Check out the example:
+## Documentation
 
-```ecmascript 6
+ApiTest documentation is [here in JSDoc.](https://github.com/abitwise/express-api-test/tree/master/docs/index.html)
+
+## Installation
+
+```bash
+$ npm i -g npm
+$ npm i --save-dev express-api-test
+```
+
+## Usage
+
+Examples:
+
+```javascript
 const ApiTest = require('express-api-test)
 
-describe('FooBar API', () => {
-  describe('getFooBar', () => {
-    it('should respond with FooBar', () => {
-      return new ApiTest(api.getFooBar)
-        .setParams({ foo: 'bar' })
+describe('Food API', () => {
+  describe('getFood', () => {
+    it('should respond with Potato', () => {
+      return new ApiTest(api.getFood)
+        .setParams({ name: 'Potato', amount: 5 })
         .expectStatus(200)
-        .expectJson({ message: 'FooBar'})
-        .run();
+        .expectJson({ food: 'Potato x 5'})
+        .run()
     })
   })
 })
 ```
 
-express-api-test covers all the express.js request and response references, speeds up express.js API testing
-and makes writing tests simple.
-
-**Full API Reference coming up soon!**
-
-## [node-swagger](https://github.com/swagger-api/swagger-node) support
-
-You can use express-api-test for node-swagger apis, instead of using setParams, use setSwaggerParams.
-
+You can use express-api-test with [node-swagger](https://github.com/swagger-api/swagger-node) APIs, instead of using setParams, use setSwaggerParams.
 Example:
 
-```ecmascript 6
+```javascript
 const ApiTest = require('express-api-test)
 
-describe('FooBar Swagger API', () => {
-  describe('getFooBar', () => {
-    it('should respond with FooBar', () => {
-      return new ApiTest(api.getFooBar)
-        .setSwaggerParams({ foo: 'bar' })
+describe('Swagger Fruit API', () => {
+  describe('getFruitBasket', () => {
+    it('should respond with Carrot', () => {
+      return new ApiTest(api.getFruitBasket)
+        .setSwaggerParams({ name: 'Apple', amount: 10 })
         .expectStatus(200)
-        .expectJson({ message: 'FooBar'})
-        .run();
+        .expectJson({ fruitBasket: 'Apple x 10'})
+        .run()
     })
   })
 })

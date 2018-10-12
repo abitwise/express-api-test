@@ -3,22 +3,27 @@
 const expect = require('chai').expect
 
 /**
- * Express.js API Testing Utility
- * Helps to test API controllers made for Express.js
+ * Express.js API Testing Utility, helps to test API controllers made for Express.js 4.x
+ * @example
+ * const ApiTest = require('express-api-test)
  *
- * Example usage:
- *
- * return new ApiTest(controller.foo)
- *   .setParams({ foo: 'bar' })
- *   .expectStatus(200)
- *   .expectJson({ message: 'FooBar'})
- *   .run();
+ * describe('Food API', () => {
+ *   describe('getFood', () => {
+ *     it('should respond with Potato', () => {
+ *       return new ApiTest(api.getFood)
+ *         .setParams({ name: 'Potato', amount: 5 })
+ *         .expectStatus(200)
+ *         .expectJson({ food: 'Potato x 5'})
+ *         .run()
+ *     })
+ *   })
+ * })
  *
  * @constructor
- * @param {function} cb - API
+ * @param {function} apiMethod - API method
  */
-let ApiTest = function (cb) {
-  this.api = cb
+let ApiTest = function (apiMethod) {
+  this.api = apiMethod
   this.called = []
   this.req = {
     headers: {},
@@ -60,15 +65,13 @@ let ApiTest = function (cb) {
   return this
 }
 
-let fn = ApiTest.prototype
-
 /**
  * Set mock for app
  *
- * @param {Object} appMock
+ * @param {Object} appMock - Express app mock
  * @returns {ApiTest}
  */
-fn.setAppMock = function (appMock) {
+ApiTest.prototype.setAppMock = function (appMock) {
   this.req.app = appMock
   this.res.app = appMock
 
@@ -77,10 +80,10 @@ fn.setAppMock = function (appMock) {
 
 /**
  * Set baseUrl
- * @param {string} baseUrl
+ * @param {string} baseUrl - Request base url
  * @returns {ApiTest}
  */
-fn.setBaseUrl = function (baseUrl) {
+ApiTest.prototype.setBaseUrl = function (baseUrl) {
   this.req.baseUrl = baseUrl
 
   return this
@@ -88,15 +91,15 @@ fn.setBaseUrl = function (baseUrl) {
 
 /**
  * Set body parameters (submitted/posted)
- * Example:
+ * @example
  *   {
  *     username: 'bob',
  *     type: 'investor'
  *   }
- * @param {Object} body
+ * @param {Object} body - Request body
  * @returns {ApiTest}
  */
-fn.setBody = function (body) {
+ApiTest.prototype.setBody = function (body) {
   this.req.body = body
 
   return this
@@ -104,16 +107,16 @@ fn.setBody = function (body) {
 
 /**
  * Set cookies
- * Example:
+ * @example
  * For cookie: name=value
  * Use:
  * {
  *   name: 'value'
  * }
- * @param {Object} cookies
+ * @param {Object} cookies - Request cookies
  * @returns {ApiTest}
  */
-fn.setCookies = function (cookies) {
+ApiTest.prototype.setCookies = function (cookies) {
   this.req.cookies = cookies
 
   return this
@@ -122,10 +125,10 @@ fn.setCookies = function (cookies) {
 /**
  * Set fresh
  *
- * @param {boolean} fresh
+ * @param {boolean} fresh - Is fresh request?
  * @returns {ApiTest}
  */
-fn.setFresh = function (fresh) {
+ApiTest.prototype.setFresh = function (fresh) {
   this.req.fresh = fresh
 
   return this
@@ -133,10 +136,10 @@ fn.setFresh = function (fresh) {
 
 /**
  * Set hostname
- * @param {string} hostname
+ * @param {string} hostname Request hostname
  * @returns {ApiTest}
  */
-fn.setHostname = function (hostname) {
+ApiTest.prototype.setHostname = function (hostname) {
   this.req.hostname = hostname
 
   return this
@@ -144,10 +147,10 @@ fn.setHostname = function (hostname) {
 
 /**
  * Set ip
- * @param {string} ip
+ * @param {string} ip - Request IP
  * @returns {ApiTest}
  */
-fn.setIp = function (ip) {
+ApiTest.prototype.setIp = function (ip) {
   this.req.ip = ip
 
   return this
@@ -155,10 +158,10 @@ fn.setIp = function (ip) {
 
 /**
  * Set ips
- * @param {string[]} ips
+ * @param {string[]} ips - Request IPS
  * @returns {ApiTest}
  */
-fn.setIps = function (ips) {
+ApiTest.prototype.setIps = function (ips) {
   this.req.ips = ips
 
   return this
@@ -166,10 +169,10 @@ fn.setIps = function (ips) {
 
 /**
  * Set method
- * @param {string} method
+ * @param {string} method - Request method
  * @returns {ApiTest}
  */
-fn.setMethod = function (method) {
+ApiTest.prototype.setMethod = function (method) {
   this.req.method = method
 
   return this
@@ -177,10 +180,10 @@ fn.setMethod = function (method) {
 
 /**
  * Set original url
- * @param {string} originalUrl
+ * @param {string} originalUrl - Request original url
  * @returns {ApiTest}
  */
-fn.setOriginalUrl = function (originalUrl) {
+ApiTest.prototype.setOriginalUrl = function (originalUrl) {
   this.req.originalUrl = originalUrl
 
   return this
@@ -188,7 +191,7 @@ fn.setOriginalUrl = function (originalUrl) {
 
 /**
  * Set request parameters
- * Example:
+ * @example
  * For: /user/:uid/photos/:file
  * Use:
  *  {
@@ -196,10 +199,10 @@ fn.setOriginalUrl = function (originalUrl) {
  *    file: 'file123'
  *  }
  *
- * @param {Object} params
+ * @param {Object} params - Request parameters
  * @returns {ApiTest}
  */
-fn.setParams = function (params) {
+ApiTest.prototype.setParams = function (params) {
   this.req = {
     param: function (name) {
       if (params.hasOwnProperty(name)) {
@@ -217,10 +220,10 @@ fn.setParams = function (params) {
 
 /**
  * Set path
- * @param {string} path
+ * @param {string} path - Request path
  * @returns {ApiTest}
  */
-fn.setPath = function (path) {
+ApiTest.prototype.setPath = function (path) {
   this.req.path = path
 
   return this
@@ -229,10 +232,10 @@ fn.setPath = function (path) {
 /**
  * Set protocol
  *
- * @param {string} protocol
+ * @param {string} protocol - Request protocol
  * @returns {ApiTest}
  */
-fn.setProtocol = function (protocol) {
+ApiTest.prototype.setProtocol = function (protocol) {
   this.req.protocol = protocol
 
   return this
@@ -241,10 +244,10 @@ fn.setProtocol = function (protocol) {
 /**
  * Set request headers which are used by req.get method
  *
- * @param headers
+ * @param headers - Request headers
  * @returns {ApiTest}
  */
-fn.setRequestHeaders = function (headers) {
+ApiTest.prototype.setRequestHeaders = function (headers) {
   this.req.headers = {}
 
   Object.entries(headers).map(pair => {
@@ -259,10 +262,10 @@ fn.setRequestHeaders = function (headers) {
 /**
  * Set swagger params
  *
- * @param params
+ * @param params - Swagger request parameters
  * @returns {ApiTest}
  */
-fn.setSwaggerParams = function (params) {
+ApiTest.prototype.setSwaggerParams = function (params) {
   this.req.swagger = {
     params: {}
   }
@@ -277,7 +280,7 @@ fn.setSwaggerParams = function (params) {
 /**
  * Set query parameters
  *
- * Example:
+ * @example
  * For /shoes?order=desc&shoe[color]=blue&shoe[type]=converse
  * Use:
  *   {
@@ -287,10 +290,10 @@ fn.setSwaggerParams = function (params) {
  *       type: 'converse'
  *     }
  *   }
- * @param {Object} query
+ * @param {Object} query - Request query
  * @returns {ApiTest}
  */
-fn.setQuery = function (query) {
+ApiTest.prototype.setQuery = function (query) {
   this.req.query = query
 
   return this
@@ -299,10 +302,10 @@ fn.setQuery = function (query) {
 /**
  * Set route
  *
- * @param {Object} route
+ * @param {Object} route - Request route
  * @returns {ApiTest}
  */
-fn.setRoute = function (route) {
+ApiTest.prototype.setRoute = function (route) {
   this.req.route = route
 
   return this
@@ -311,10 +314,10 @@ fn.setRoute = function (route) {
 /**
  * Set secure
  *
- * @param {boolean} secure
+ * @param {boolean} secure - Request is secure
  * @returns {ApiTest}
  */
-fn.setSecure = function (secure) {
+ApiTest.prototype.setSecure = function (secure) {
   this.req.secure = secure
 
   return this
@@ -323,10 +326,10 @@ fn.setSecure = function (secure) {
 /**
  * Set signed cookies
  *
- * @param {Object} signedCookies
+ * @param {Object} signedCookies - Request signed cookies
  * @returns {ApiTest}
  */
-fn.setSignedCookies = function (signedCookies) {
+ApiTest.prototype.setSignedCookies = function (signedCookies) {
   this.req.signedCookies = signedCookies
 
   return this
@@ -335,10 +338,10 @@ fn.setSignedCookies = function (signedCookies) {
 /**
  * Set stale
  *
- * @param {boolean} stale
+ * @param {boolean} stale - Request is stale
  * @returns {ApiTest}
  */
-fn.setStale = function (stale) {
+ApiTest.prototype.setStale = function (stale) {
   this.req.stale = stale
 
   return this
@@ -347,10 +350,10 @@ fn.setStale = function (stale) {
 /**
  * Set subdomains
  *
- * @param {string[]} subdomains
+ * @param {string[]} subdomains - Request subdomains
  * @returns {ApiTest}
  */
-fn.setSubdomains = function (subdomains) {
+ApiTest.prototype.setSubdomains = function (subdomains) {
   this.req.subdomains = subdomains
 
   return this
@@ -359,25 +362,24 @@ fn.setSubdomains = function (subdomains) {
 /**
  * Set xhr
  *
- * @param {boolean} xhr
+ * @param {boolean} xhr - Request xhr
  * @returns {ApiTest}
  */
-fn.setXhr = function (xhr) {
+ApiTest.prototype.setXhr = function (xhr) {
   this.req.xhr = xhr
 
   return this
 }
 
 /**
- * Expect appended header
- *  - Can be used multiple times to expect multiple headers
+ * Expect appended header: can be used multiple times to expect multiple headers
  *
- * @param {string} expectedHeaderField
- * @param {*} expectedValue
+ * @param {string} expectedHeaderField - Expected header field
+ * @param {*} expectedValue - Expected header value
  *
  * @returns {ApiTest}
  */
-fn.expectAppend = function (expectedHeaderField, expectedValue) {
+ApiTest.prototype.expectAppend = function (expectedHeaderField, expectedValue) {
   this.called.push(new Promise((resolve, reject) => {
     this['resolveAppend_' + expectedHeaderField] = resolve
     this['rejectAppend_' + expectedHeaderField] = reject
@@ -405,10 +407,10 @@ fn.expectAppend = function (expectedHeaderField, expectedValue) {
 /**
  * Expect attachment
  *
- * @param {string} [expectedFilePath]
+ * @param {string} [expectedFilePath] - Expected file path
  * @returns {ApiTest}
  */
-fn.expectAttachment = function (expectedFilePath) {
+ApiTest.prototype.expectAttachment = function (expectedFilePath) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveAttachment = resolve
     this.rejectAttachment = reject
@@ -429,15 +431,14 @@ fn.expectAttachment = function (expectedFilePath) {
 }
 
 /**
- * Expect that cookie was set
- *  - Can be used many times to expect multiple cookies
+ * Expect that cookie was set: can be used many times to expect multiple cookies
  *
- * @param {string} expectedName
- * @param {*} expectedValue
- * @param {Object} [expectedOptions]
+ * @param {string} expectedName - Expected cookie name
+ * @param {*} expectedValue - Expected cookie value
+ * @param {Object} [expectedOptions] - Expected cookie options
  * @returns {ApiTest}
  */
-fn.expectCookie = function (expectedName, expectedValue, expectedOptions) {
+ApiTest.prototype.expectCookie = function (expectedName, expectedValue, expectedOptions) {
   this.called.push(new Promise((resolve, reject) => {
     this['resolveCookie_' + expectedName] = resolve
     this['rejectCookie_' + expectedName] = reject
@@ -464,14 +465,13 @@ fn.expectCookie = function (expectedName, expectedValue, expectedOptions) {
 }
 
 /**
- * Expect that cookie was cleared
- *  - Can be used many times to expect that multiple cookies were cleared
+ * Expect that cookie was cleared: can be used many times to expect that multiple cookies were cleared
  *
- * @param {string} expectedName
- * @param {Object} [expectedOptions]
+ * @param {string} expectedName - Expected cleared cookie name
+ * @param {Object} [expectedOptions] - Expected options
  * @returns {ApiTest}
  */
-fn.expectClearCookie = function (expectedName, expectedOptions) {
+ApiTest.prototype.expectClearCookie = function (expectedName, expectedOptions) {
   this.called.push(new Promise((resolve, reject) => {
     this['resolveClearCookie_' + expectedName] = resolve
     this['rejectClearCookie_' + expectedName] = reject
@@ -499,10 +499,10 @@ fn.expectClearCookie = function (expectedName, expectedOptions) {
 /**
  * Expect json response
  *
- * @param expectedJson
+ * @param expectedJson - Expected json response
  * @returns {ApiTest}
  */
-fn.expectJson = function (expectedJson) {
+ApiTest.prototype.expectJson = function (expectedJson) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveJson = resolve
     this.rejectJson = reject
@@ -525,11 +525,11 @@ fn.expectJson = function (expectedJson) {
 /**
  * Expect redirect
  *
- * @param {number} [expectedStatus]
- * @param {string} expectedPath
+ * @param {number} [expectedStatus] - Expected redirect status
+ * @param {string} expectedPath - Expected redirect path
  * @returns {ApiTest}
  */
-fn.expectRedirect = function (expectedStatus, expectedPath) {
+ApiTest.prototype.expectRedirect = function (expectedStatus, expectedPath) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveSend = resolve
     this.rejectSend = reject
@@ -557,10 +557,10 @@ fn.expectRedirect = function (expectedStatus, expectedPath) {
 /**
  * Expect send
  *
- * @param {*} expectedValue
+ * @param {*} expectedValue - Expected send response value
  * @returns {ApiTest}
  */
-fn.expectSend = function (expectedValue) {
+ApiTest.prototype.expectSend = function (expectedValue) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveSend = resolve
     this.rejectSend = reject
@@ -583,12 +583,12 @@ fn.expectSend = function (expectedValue) {
 /**
  * Expect sendFile
  *
- * @param {string} expectedPath
- * @param {Object} [expectedOptions]
- * @param {requestCallback} [expectedFn]
+ * @param {string} expectedPath - Expected path
+ * @param {Object} [expectedOptions] - Expected options
+ * @param {requestCallback} [expectedFn] - Expected callback function
  * @returns {ApiTest}
  */
-fn.expectSendFile = function (expectedPath, expectedOptions, expectedFn) {
+ApiTest.prototype.expectSendFile = function (expectedPath, expectedOptions, expectedFn) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveSendFile = resolve
     this.rejectSendFile = reject
@@ -613,10 +613,10 @@ fn.expectSendFile = function (expectedPath, expectedOptions, expectedFn) {
 /**
  * Expect http status code
  *
- * @param expectedStatusCode
+ * @param expectedStatusCode - Expected send status
  * @returns {ApiTest}
  */
-fn.expectSendStatus = function (expectedStatusCode) {
+ApiTest.prototype.expectSendStatus = function (expectedStatusCode) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveSendStatus = resolve
     this.rejectSendStatus = reject
@@ -639,10 +639,10 @@ fn.expectSendStatus = function (expectedStatusCode) {
 /**
  * Expect http status code
  *
- * @param expectedStatusCode
+ * @param expectedStatusCode - Expected status code
  * @returns {ApiTest}
  */
-fn.expectStatus = function (expectedStatusCode) {
+ApiTest.prototype.expectStatus = function (expectedStatusCode) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveStatus = resolve
     this.rejectStatus = reject
@@ -667,7 +667,7 @@ fn.expectStatus = function (expectedStatusCode) {
  *
  * @return {ApiTest}
  */
-fn.expectEnd = function () {
+ApiTest.prototype.expectEnd = function () {
   this.called.push(new Promise(resolve => { this.resolveEnd = resolve }))
 
   this.res.end = () => {
@@ -680,11 +680,11 @@ fn.expectEnd = function () {
 }
 
 /**
- * Run to initiate api call and assertions
+ * Run test: initiates api call and assertions
  *
  * @returns {Promise.<*>}
  */
-fn.run = function () {
+ApiTest.prototype.run = function () {
   this.api(this.req, this.res)
 
   return Promise.all(this.called)
