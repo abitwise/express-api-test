@@ -497,6 +497,49 @@ ApiTest.prototype.expectClearCookie = function (expectedName, expectedOptions) {
 }
 
 /**
+ * Expect file transfer
+ *
+ * @param {string} expectedPath
+ * @param {string} [expectedFilename]
+ * @param {Object} [expectedOptions]
+ * @param {requestCallback} [expectedFn]
+ * @returns {ApiTest}
+ */
+ApiTest.prototype.expectDownload = function (expectedPath, expectedFilename, expectedOptions, expectedFn) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveDownload = resolve
+    this.rejectDownload = reject
+  }))
+
+  this.res.download = (path, filename, options, fn) => {
+    try {
+      expect(path).to.equal(expectedPath)
+
+      if (expectedFilename) {
+        expect(filename).to.equal(expectedFilename)
+      }
+
+      if (expectedOptions) {
+        expect(options).to.deep.equal(expectedOptions)
+      }
+
+      if (expectedFn) {
+        expect(fn).to.be.a('function')
+        expect(fn).to.deep.equal(expectedFn)
+      }
+
+      this.resolveDownload()
+    } catch (err) {
+      this.rejectDownload(err)
+    }
+
+    return this.res
+  }
+
+  return this
+}
+
+/**
  * Expect json response
  *
  * @param expectedJson - Expected json response

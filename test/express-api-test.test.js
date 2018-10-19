@@ -122,6 +122,10 @@ describe('ApiTest', () => {
     { method: 'expectAttachment', value: 'path/to/file.jpg', expectedFunction: 'res.attachment' },
     { method: 'expectCookie', values: ['name', 'tobi', { signed: true }], expectedFunction: 'res.cookie' },
     { method: 'expectClearCookie', values: ['name', { path: '/admin' }], expectedFunction: 'res.clearCookie' },
+    { method: 'expectDownload', value: 'path', expectedFunction: 'res.download' },
+    { method: 'expectDownload', values: ['path', 'filename'], expectedFunction: 'res.download' },
+    { method: 'expectDownload', values: ['path', 'filename', () => {}], expectedFunction: 'res.download' },
+    { method: 'expectDownload', values: ['path', 'filename', { a: 'b' }, () => {}], expectedFunction: 'res.download' },
     { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunction: 'res.send' },
     { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunction: 'res.sendFile' },
     { method: 'expectSendStatus', value: HttpStatus.OK, expectedFunction: 'res.sendStatus' },
@@ -129,7 +133,17 @@ describe('ApiTest', () => {
     { method: 'expectRedirect', value: 'http://example.com', expectedFunction: 'res.redirect' }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
-      it(util.format('should set %s function and add wait promise', unitTest.expectedFunction), async () => {
+      let valueCount = '1 parameter'
+      if (unitTest.values) {
+        valueCount = util.format('%s parameters', unitTest.values.length)
+      }
+
+      const itMessage = util.format(
+        'should set %s function using %s and add wait promise',
+        unitTest.expectedFunction, valueCount
+      )
+
+      it(itMessage, async () => {
         let test = new ApiTest(testApi.apiWithParams)
           .setParams({ test: '123' })
 

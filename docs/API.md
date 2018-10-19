@@ -31,6 +31,7 @@
     * [.expectAttachment([expectedFilePath])](#ApiTest+expectAttachment) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectCookie(expectedName, expectedValue, [expectedOptions])](#ApiTest+expectCookie) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectClearCookie(expectedName, [expectedOptions])](#ApiTest+expectClearCookie) ⇒ [<code>ApiTest</code>](#ApiTest)
+    * [.expectDownload(expectedPath, [expectedFilename], [expectedOptions], [expectedFn])](#ApiTest+expectDownload) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectJson(expectedJson)](#ApiTest+expectJson) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectRedirect([expectedStatus], expectedPath)](#ApiTest+expectRedirect) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectSend(expectedValue)](#ApiTest+expectSend) ⇒ [<code>ApiTest</code>](#ApiTest)
@@ -391,6 +392,20 @@ Expect that cookie was cleared: can be used many times to expect that multiple c
 | --- | --- | --- |
 | expectedName | <code>string</code> | Expected cleared cookie name |
 | [expectedOptions] | <code>Object</code> | Expected options |
+
+<a name="ApiTest+expectDownload"></a>
+
+### apiTest.expectDownload(expectedPath, [expectedFilename], [expectedOptions], [expectedFn]) ⇒ [<code>ApiTest</code>](#ApiTest)
+Expect file transfer
+
+**Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
+
+| Param | Type |
+| --- | --- |
+| expectedPath | <code>string</code> | 
+| [expectedFilename] | <code>string</code> | 
+| [expectedOptions] | <code>Object</code> | 
+| [expectedFn] | <code>requestCallback</code> | 
 
 <a name="ApiTest+expectJson"></a>
 
