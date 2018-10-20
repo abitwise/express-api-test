@@ -231,6 +231,20 @@ describe('ApiTest', () => {
         .expectStatus(HttpStatus.OK)
         .expectJson({ response: '123' })
         .run()
+    });
+
+    [
+      { accept: 'text/plain', expected: 'hey' },
+      { accept: 'text/html', expected: '<p>hey</p>' },
+      { accept: 'application/json', expected: { message: 'hey' } },
+      { accept: 'unsupported', expected: 'Not Acceptable' }
+    ].forEach(unitTest => {
+      it(util.format('should correctly work with format when accepting %s', unitTest.accept), () => {
+        return new ApiTest(testApi.apiWithFormat)
+          .setRequestHeaders({ accept: unitTest.accept })
+          .expectSend(unitTest.expected)
+          .run()
+      })
     })
   })
 })

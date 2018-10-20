@@ -43,7 +43,21 @@ let ApiTest = function (apiMethod) {
     clearCookie: () => this.res,
     download: () => this.res,
     end: () => this.res,
-    format: () => this.res,
+    format: (obj) => {
+      if (this.req.headers && this.req.headers.accept) {
+        let fn = obj[this.req.headers.accept]
+
+        if (fn) {
+          fn()
+        } else {
+          obj['default']()
+        }
+      } else {
+        obj['default']()
+      }
+
+      return this.res
+    },
     get: () => this.res,
     json: () => this.res,
     jsonp: () => this.res,

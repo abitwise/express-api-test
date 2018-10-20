@@ -9,7 +9,8 @@ module.exports = {
   apiWithBody,
   apiWithMultipleAppends,
   apiWithMultipleCookies,
-  apiWithMultipleClearCookies
+  apiWithMultipleClearCookies,
+  apiWithFormat
 }
 
 function emptyApi (req, res) {
@@ -48,4 +49,24 @@ function apiWithMultipleClearCookies (req, res) {
   res.clearCookie('rememberme')
 
   res.status(HttpStatus.OK).end()
+}
+
+function apiWithFormat (req, res) {
+  res.format({
+    'text/plain': () => {
+      res.send('hey')
+    },
+
+    'text/html': () => {
+      res.send('<p>hey</p>')
+    },
+
+    'application/json': () => {
+      res.send({ message: 'hey' })
+    },
+
+    'default': () => {
+      res.status(406).send('Not Acceptable')
+    }
+  })
 }
