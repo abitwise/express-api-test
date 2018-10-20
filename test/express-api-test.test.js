@@ -111,26 +111,36 @@ describe('ApiTest', () => {
   });
 
   [
-    { method: 'expectJson', value: { result: '123' }, expectedFunction: 'res.json' },
-    { method: 'expectStatus', value: HttpStatus.OK, expectedFunction: 'res.status' },
-    { method: 'expectEnd', value: null, expectedFunction: 'res.end' },
+    { method: 'expectJson', value: { result: '123' }, expectedFunctions: ['res.json'] },
+    { method: 'expectStatus', value: HttpStatus.OK, expectedFunctions: ['res.status'] },
+    { method: 'expectEnd', value: null, expectedFunctions: ['res.end'] },
     {
       method: 'expectAppend',
       values: ['Link', ['<http://localhost/>', '<http://localhost:3000/>']],
-      expectedFunction: 'res.append'
+      expectedFunctions: ['res.append']
     },
-    { method: 'expectAttachment', value: 'path/to/file.jpg', expectedFunction: 'res.attachment' },
-    { method: 'expectCookie', values: ['name', 'tobi', { signed: true }], expectedFunction: 'res.cookie' },
-    { method: 'expectClearCookie', values: ['name', { path: '/admin' }], expectedFunction: 'res.clearCookie' },
-    { method: 'expectDownload', value: 'path', expectedFunction: 'res.download' },
-    { method: 'expectDownload', values: ['path', 'filename'], expectedFunction: 'res.download' },
-    { method: 'expectDownload', values: ['path', 'filename', () => {}], expectedFunction: 'res.download' },
-    { method: 'expectDownload', values: ['path', 'filename', { a: 'b' }, () => {}], expectedFunction: 'res.download' },
-    { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunction: 'res.send' },
-    { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunction: 'res.sendFile' },
-    { method: 'expectSendStatus', value: HttpStatus.OK, expectedFunction: 'res.sendStatus' },
-    { method: 'expectRedirect', values: [301, 'http://example.com'], expectedFunction: 'res.redirect' },
-    { method: 'expectRedirect', value: 'http://example.com', expectedFunction: 'res.redirect' }
+    { method: 'expectAttachment', value: 'path/to/file.jpg', expectedFunctions: ['res.attachment'] },
+    { method: 'expectCookie', values: ['name', 'tobi', { signed: true }], expectedFunctions: ['res.cookie'] },
+    { method: 'expectClearCookie', values: ['name', { path: '/admin' }], expectedFunctions: ['res.clearCookie'] },
+    { method: 'expectDownload', value: 'path', expectedFunctions: ['res.download'] },
+    { method: 'expectDownload', values: ['path', 'filename'], expectedFunctions: ['res.download'] },
+    { method: 'expectDownload', values: ['path', 'filename', () => {}], expectedFunctions: ['res.download'] },
+    { method: 'expectDownload', values: ['path', 'filename', { a: 'b' }, () => {}], expectedFunctions: ['res.download'] },
+    { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunctions: ['res.send'] },
+    { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunctions: ['res.sendFile'] },
+    { method: 'expectSendStatus', value: HttpStatus.OK, expectedFunctions: ['res.sendStatus'] },
+    { method: 'expectRedirect', values: [301, 'http://example.com'], expectedFunctions: ['res.redirect'] },
+    { method: 'expectRedirect', value: 'http://example.com', expectedFunctions: ['res.redirect'] },
+    {
+      method: 'expectResponseHeaders',
+      value: {
+        'Content-Type': 'text/plain',
+        'Content-Length': '123',
+        'ETag': '12345'
+      },
+      calledLength: 3,
+      expectedFunctions: ['res.set', 'res.get']
+    }
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
       let valueCount = '1 parameter'
@@ -147,18 +157,22 @@ describe('ApiTest', () => {
         let test = new ApiTest(testApi.apiWithParams)
           .setParams({ test: '123' })
 
+        expect(test[unitTest.method]).to.be.a('function')
+
         if (unitTest.values) {
           test[unitTest.method](...unitTest.values)
         } else {
           test[unitTest.method](unitTest.value)
         }
 
-        let expectedParameter = _.get(test, unitTest.expectedFunction)
+        for (let key in unitTest.expectedFunctions) {
+          let expectedParameter = _.get(test, unitTest.expectedFunctions[key])
 
-        await expect(expectedParameter).to.be.a('function')
-        await expect(test.called).to.be.an('array')
-        await expect(test.called.length).to.equal(1)
-        await expect(test.called[0]).to.be.a('promise')
+          await expect(expectedParameter).to.be.a('function')
+          await expect(test.called).to.be.an('array')
+          await expect(test.called.length).to.equal(unitTest.calledLength || 1)
+          await expect(test.called[0]).to.be.a('promise')
+        }
       })
     })
   })

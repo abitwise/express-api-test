@@ -612,6 +612,58 @@ ApiTest.prototype.expectRedirect = function (expectedStatus, expectedPath) {
 }
 
 /**
+ * Expect response headers which are used by res.get and set by res.set method
+ *
+ * @param {string|Object} expectedHeaderField - Request header or headers (when object)
+ * @param {string} [expectedValue]
+ * @returns {ApiTest}
+ */
+ApiTest.prototype.expectResponseHeaders = function (expectedHeaderField, expectedValue) {
+  let self = this
+
+  const singleSet = function (expectedHeaderField, expectedValue) {
+    self.called.push(new Promise((resolve, reject) => {
+      self['resolveResSet_' + expectedHeaderField] = resolve
+      self['rejectResSet_' + expectedHeaderField] = reject
+    }))
+
+    self['resSetExpects_' + expectedHeaderField] = (headerField, value) => {
+      expect(headerField).to.equal(expectedHeaderField)
+      expect(value).to.deep.equal(expectedValue)
+    }
+
+    self.res.set = (headerField, value) => {
+      try {
+        self['resSetExpects_' + headerField](headerField, value)
+        self['resolveResSet_' + headerField]()
+      } catch (err) {
+        self['rejectResSet_' + headerField](err)
+      }
+
+      return self.res
+    }
+  }
+
+  if (typeof expectedHeaderField === 'string') {
+    singleSet(expectedHeaderField, expectedValue)
+  } else {
+    Object.keys(expectedHeaderField).forEach(key => {
+      singleSet(key, expectedHeaderField[key])
+    })
+  }
+
+  this.res.headers = {}
+
+  Object.entries(expectedHeaderField).map(pair => {
+    this.res.headers[pair[0].toLowerCase()] = pair[1]
+  })
+
+  this.res.get = (field) => this.req.headers[field.toLowerCase()]
+
+  return this
+}
+
+/**
  * Expect send
  *
  * @param {*} expectedValue - Expected send response value
