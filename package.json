@@ -54,7 +54,8 @@
   },
   "scripts": {
     "build": "npx babel ./src/express-api-test.js --out-file ./lib/express-api-test.js",
-    "test": "npx mocha --recursive --timeout 30000 ./test/loader.js ./test/*.test.js",
+    "test": "./node_modules/.bin/_mocha --recursive --timeout 30000 ./test/loader.js ./test/*.test.js",
+    "test_new": "npx mocha --recursive --timeout 30000 ./test/loader.js ./test/*.test.js",
     "lint": "npx eslint src test",
     "coverage": "npx istanbul cover ./node_modules/mocha/bin/_mocha -- --recursive --timeout 30000 ./test/loader.js ./test/*.test.js",
     "docs": "npx jsdoc2md src/express-api-test.js > ./docs/API.md"
