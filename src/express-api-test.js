@@ -605,6 +605,12 @@ ApiTest.prototype.expectJsonp = function (expectedJsonp) {
   return this
 }
 
+/**
+ * Expect that res.links was called
+ *
+ * @param expectedLinks
+ * @returns {ApiTest}
+ */
 ApiTest.prototype.expectLinks = function (expectedLinks) {
   this.called.push(new Promise((resolve, reject) => {
     this.resolveLinks = resolve
@@ -626,7 +632,33 @@ ApiTest.prototype.expectLinks = function (expectedLinks) {
 }
 
 /**
- * Expect redirect
+ * Expect that res.location was called
+ *
+ * @param {string} expectedLocation
+ * @returns {ApiTest}
+ */
+ApiTest.prototype.expectLocation = function (expectedLocation) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveLocation = resolve
+    this.rejectLocation = reject
+  }))
+
+  this.res.location = location => {
+    try {
+      expect(location).equal(expectedLocation)
+      this.resolveLocation()
+    } catch (err) {
+      this.rejectLocation(err)
+    }
+
+    return this.res
+  }
+
+  return this
+}
+
+/**
+ * Expect res.redirect was called
  *
  * @param {number} [expectedStatus] - Expected redirect status
  * @param {string} expectedPath - Expected redirect path

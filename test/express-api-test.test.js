@@ -131,6 +131,7 @@ describe('ApiTest', () => {
       value: { next: 'http://e.com/usr?p=2', last: 'http://e.com/usr?p=5' },
       expectedFunctions: ['res.links']
     },
+    { method: 'expectLocation', value: 'http://example.com', expectedFunctions: ['res.location'] },
     { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunctions: ['res.send'] },
     { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunctions: ['res.sendFile'] },
     { method: 'expectSendStatus', value: HttpStatus.OK, expectedFunctions: ['res.sendStatus'] },
