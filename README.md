@@ -2,7 +2,7 @@
 
 Fast unit testing for [express.js](https://expressjs.com) 4.x APIs
 
-[![Build Status](https://travis-ci.org/abitwise/express-api-test#)](https://travis-ci.org/abitwise/express-api-test)
+[![Build Status](https://travis-ci.org/abitwise/express-api-test.svg?branch=master)](https://travis-ci.org/abitwise/express-api-test)
 
 ```javascript
 it('should respond with Hello <name>', () => {
