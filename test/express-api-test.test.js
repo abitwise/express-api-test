@@ -111,9 +111,6 @@ describe('ApiTest', () => {
   });
 
   [
-    { method: 'expectJson', value: { result: '123' }, expectedFunctions: ['res.json'] },
-    { method: 'expectStatus', value: HttpStatus.OK, expectedFunctions: ['res.status'] },
-    { method: 'expectEnd', value: null, expectedFunctions: ['res.end'] },
     {
       method: 'expectAppend',
       values: ['Link', ['<http://localhost/>', '<http://localhost:3000/>']],
@@ -126,9 +123,13 @@ describe('ApiTest', () => {
     { method: 'expectDownload', values: ['path', 'filename'], expectedFunctions: ['res.download'] },
     { method: 'expectDownload', values: ['path', 'filename', () => {}], expectedFunctions: ['res.download'] },
     { method: 'expectDownload', values: ['path', 'filename', { a: 'b' }, () => {}], expectedFunctions: ['res.download'] },
+    { method: 'expectEnd', value: null, expectedFunctions: ['res.end'] },
+    { method: 'expectJson', value: { result: '123' }, expectedFunctions: ['res.json'] },
+    { method: 'expectJsonp', value: { result: '123' }, expectedFunctions: ['res.jsonp'] },
     { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunctions: ['res.send'] },
     { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunctions: ['res.sendFile'] },
     { method: 'expectSendStatus', value: HttpStatus.OK, expectedFunctions: ['res.sendStatus'] },
+    { method: 'expectStatus', value: HttpStatus.OK, expectedFunctions: ['res.status'] },
     { method: 'expectRedirect', values: [301, 'http://example.com'], expectedFunctions: ['res.redirect'] },
     { method: 'expectRedirect', value: 'http://example.com', expectedFunctions: ['res.redirect'] },
     {

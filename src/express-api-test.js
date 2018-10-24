@@ -565,12 +565,38 @@ ApiTest.prototype.expectJson = function (expectedJson) {
     this.rejectJson = reject
   }))
 
-  this.res.json = (json) => {
+  this.res.json = json => {
     try {
       expect(json).to.deep.equal(expectedJson)
       this.resolveJson()
     } catch (err) {
       this.rejectJson(err)
+    }
+
+    return this.res
+  }
+
+  return this
+}
+
+/**
+ * Expect jsonp response
+ *
+ * @param expectedJsonp
+ * @returns {ApiTest}
+ */
+ApiTest.prototype.expectJsonp = function (expectedJsonp) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveJsonp = resolve
+    this.rejectJsonp = reject
+  }))
+
+  this.res.jsonp = jsonp => {
+    try {
+      expect(jsonp).to.deep.equal(expectedJsonp)
+      this.resolveJsonp()
+    } catch (err) {
+      this.rejectJsonp(err)
     }
 
     return this.res
