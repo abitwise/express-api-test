@@ -556,7 +556,7 @@ ApiTest.prototype.expectDownload = function (expectedPath, expectedFilename, exp
 /**
  * Expect json response
  *
- * @param expectedJson - Expected json response
+ * @param {Object} expectedJson - Expected json response
  * @returns {ApiTest}
  */
 ApiTest.prototype.expectJson = function (expectedJson) {
@@ -582,7 +582,7 @@ ApiTest.prototype.expectJson = function (expectedJson) {
 /**
  * Expect jsonp response
  *
- * @param expectedJsonp
+ * @param {Object} expectedJsonp - Expected jsonp response
  * @returns {ApiTest}
  */
 ApiTest.prototype.expectJsonp = function (expectedJsonp) {
@@ -597,6 +597,26 @@ ApiTest.prototype.expectJsonp = function (expectedJsonp) {
       this.resolveJsonp()
     } catch (err) {
       this.rejectJsonp(err)
+    }
+
+    return this.res
+  }
+
+  return this
+}
+
+ApiTest.prototype.expectLinks = function (expectedLinks) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveLinks = resolve
+    this.rejectLinks = reject
+  }))
+
+  this.res.links = links => {
+    try {
+      expect(links).to.deep.equal(expectedLinks)
+      this.resolveLinks()
+    } catch (err) {
+      this.rejectLinks(err)
     }
 
     return this.res

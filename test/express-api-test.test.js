@@ -126,6 +126,11 @@ describe('ApiTest', () => {
     { method: 'expectEnd', value: null, expectedFunctions: ['res.end'] },
     { method: 'expectJson', value: { result: '123' }, expectedFunctions: ['res.json'] },
     { method: 'expectJsonp', value: { result: '123' }, expectedFunctions: ['res.jsonp'] },
+    {
+      method: 'expectLinks',
+      value: { next: 'http://e.com/usr?p=2', last: 'http://e.com/usr?p=5' },
+      expectedFunctions: ['res.links']
+    },
     { method: 'expectSend', value: 'Sorry, we cannot find that!', expectedFunctions: ['res.send'] },
     { method: 'expectSendFile', values: ['photo.jpg', {}, () => {}], expectedFunctions: ['res.sendFile'] },
     { method: 'expectSendStatus', value: HttpStatus.OK, expectedFunctions: ['res.sendStatus'] },
