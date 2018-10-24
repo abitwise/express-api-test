@@ -33,7 +33,11 @@
     * [.expectClearCookie(expectedName, [expectedOptions])](#ApiTest+expectClearCookie) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectDownload(expectedPath, [expectedFilename], [expectedOptions], [expectedFn])](#ApiTest+expectDownload) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectJson(expectedJson)](#ApiTest+expectJson) ⇒ [<code>ApiTest</code>](#ApiTest)
+    * [.expectJsonp(expectedJsonp)](#ApiTest+expectJsonp) ⇒ [<code>ApiTest</code>](#ApiTest)
+    * [.expectLinks(expectedLinks)](#ApiTest+expectLinks) ⇒ [<code>ApiTest</code>](#ApiTest)
+    * [.expectLocation(expectedLocation)](#ApiTest+expectLocation) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectRedirect([expectedStatus], expectedPath)](#ApiTest+expectRedirect) ⇒ [<code>ApiTest</code>](#ApiTest)
+    * [.expectResponseHeaders(expectedHeaderField, [expectedValue])](#ApiTest+expectResponseHeaders) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectSend(expectedValue)](#ApiTest+expectSend) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectSendFile(expectedPath, [expectedOptions], [expectedFn])](#ApiTest+expectSendFile) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectSendStatus(expectedStatusCode)](#ApiTest+expectSendStatus) ⇒ [<code>ApiTest</code>](#ApiTest)
@@ -414,14 +418,47 @@ Expect json response
 
 **Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
 
-| Param | Description |
+| Param | Type | Description |
+| --- | --- | --- |
+| expectedJson | <code>Object</code> | Expected json response |
+
+<a name="ApiTest+expectJsonp"></a>
+
+### apiTest.expectJsonp(expectedJsonp) ⇒ [<code>ApiTest</code>](#ApiTest)
+Expect jsonp response
+
+**Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| expectedJsonp | <code>Object</code> | Expected jsonp response |
+
+<a name="ApiTest+expectLinks"></a>
+
+### apiTest.expectLinks(expectedLinks) ⇒ [<code>ApiTest</code>](#ApiTest)
+Expect that res.links was called
+
+**Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
+
+| Param |
+| --- |
+| expectedLinks | 
+
+<a name="ApiTest+expectLocation"></a>
+
+### apiTest.expectLocation(expectedLocation) ⇒ [<code>ApiTest</code>](#ApiTest)
+Expect that res.location was called
+
+**Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
+
+| Param | Type |
 | --- | --- |
-| expectedJson | Expected json response |
+| expectedLocation | <code>string</code> | 
 
 <a name="ApiTest+expectRedirect"></a>
 
 ### apiTest.expectRedirect([expectedStatus], expectedPath) ⇒ [<code>ApiTest</code>](#ApiTest)
-Expect redirect
+Expect res.redirect was called
 
 **Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
 
@@ -429,6 +466,18 @@ Expect redirect
 | --- | --- | --- |
 | [expectedStatus] | <code>number</code> | Expected redirect status |
 | expectedPath | <code>string</code> | Expected redirect path |
+
+<a name="ApiTest+expectResponseHeaders"></a>
+
+### apiTest.expectResponseHeaders(expectedHeaderField, [expectedValue]) ⇒ [<code>ApiTest</code>](#ApiTest)
+Expect response headers which are used by res.get and set by res.set method
+
+**Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| expectedHeaderField | <code>string</code> \| <code>Object</code> | Request header or headers (when object) |
+| [expectedValue] | <code>string</code> |  |
 
 <a name="ApiTest+expectSend"></a>
 
