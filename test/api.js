@@ -10,7 +10,8 @@ module.exports = {
   apiWithMultipleAppends,
   apiWithMultipleCookies,
   apiWithMultipleClearCookies,
-  apiWithFormat
+  apiWithFormat,
+  apiWithRender
 }
 
 function emptyApi (req, res) {
@@ -67,6 +68,16 @@ function apiWithFormat (req, res) {
 
     'default': () => {
       res.status(406).send('Not Acceptable')
+    }
+  })
+}
+
+function apiWithRender (req, res) {
+  res.render('user', { name: 'Tobi' }, (err, html) => {
+    if (err) {
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    } else {
+      res.send(html)
     }
   })
 }

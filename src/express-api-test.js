@@ -690,6 +690,38 @@ ApiTest.prototype.expectRedirect = function (expectedStatus, expectedPath) {
 }
 
 /**
+ * Expect res.render was called
+ *
+ * @param {string} expectedTemplate
+ * @param {Object} expectedParams
+ * @returns {ApiTest}
+ */
+ApiTest.prototype.expectRender = function (expectedTemplate, expectedParams) {
+  this.called.push(new Promise((resolve, reject) => {
+    this.resolveRender = resolve
+    this.rejectRender = reject
+  }))
+
+  this.res.render = (template, params) => {
+    try {
+      if (!expectedParams) {
+        expect(params).to.deep.equal(expectedParams)
+      } else {
+        expect(template).to.equal(expectedTemplate)
+        expect(params).to.deep.equal(expectedParams)
+      }
+      this.resolveRender()
+    } catch (err) {
+      this.rejectRender(err)
+    }
+
+    return this.res
+  }
+
+  return this
+}
+
+/**
  * Expect response headers which are used by res.get and set by res.set method
  *
  * @param {string|Object} expectedHeaderField - Request header or headers (when object)

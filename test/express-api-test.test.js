@@ -138,6 +138,7 @@ describe('ApiTest', () => {
     { method: 'expectStatus', value: HttpStatus.OK, expectedFunctions: ['res.status'] },
     { method: 'expectRedirect', values: [301, 'http://example.com'], expectedFunctions: ['res.redirect'] },
     { method: 'expectRedirect', value: 'http://example.com', expectedFunctions: ['res.redirect'] },
+    { method: 'expectRender', values: [ 'hello', { name: 'John' }, () => {} ], expectedFunctions: ['res.render'] },
     {
       method: 'expectResponseHeaders',
       value: {
