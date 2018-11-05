@@ -60,6 +60,21 @@ describe('ApiTest', () => {
     })
   })
 
+  describe('setCustom', () => {
+    it('should set custom req parameter', async () => {
+      let entry = {
+        name: 'audit',
+        value: { anything: true }
+      }
+
+      let test = new ApiTest(testApi.emptyApi)
+        .setCustom(entry)
+
+      await expect(test.req).to.have.property(entry.name)
+      await expect(test.req[entry.name]).to.deep.equal(entry.value)
+    })
+  })
+
   describe('setParams', () => {
     it('should set req.params', async () => {
       let params = { test: '123' }
