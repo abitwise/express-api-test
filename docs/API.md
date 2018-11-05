@@ -9,6 +9,7 @@
     * [.setBaseUrl(baseUrl)](#ApiTest+setBaseUrl) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.setBody(body)](#ApiTest+setBody) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.setCookies(cookies)](#ApiTest+setCookies) ⇒ [<code>ApiTest</code>](#ApiTest)
+    * [.setCustom(custom)](#ApiTest+setCustom) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.setFresh(fresh)](#ApiTest+setFresh) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.setHostname(hostname)](#ApiTest+setHostname) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.setIp(ip)](#ApiTest+setIp) ⇒ [<code>ApiTest</code>](#ApiTest)
@@ -128,6 +129,26 @@ For cookie: name=value
 Use:
 {
   name: 'value'
+}
+```
+<a name="ApiTest+setCustom"></a>
+
+### apiTest.setCustom(custom) ⇒ [<code>ApiTest</code>](#ApiTest)
+Set new custom parameter under req
+
+**Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
+
+| Param | Type |
+| --- | --- |
+| custom | <code>Object</code> | 
+
+**Example**  
+```js
+For req.audit = value
+Use:
+{
+  name: 'audit',
+  value: { anything: true }
 }
 ```
 <a name="ApiTest+setFresh"></a>
