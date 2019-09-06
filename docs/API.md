@@ -38,6 +38,7 @@
     * [.expectLinks(expectedLinks)](#ApiTest+expectLinks) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectLocation(expectedLocation)](#ApiTest+expectLocation) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectRedirect([expectedStatus], expectedPath)](#ApiTest+expectRedirect) ⇒ [<code>ApiTest</code>](#ApiTest)
+    * [.expectRender(expectedTemplate, expectedParams)](#ApiTest+expectRender) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectResponseHeaders(expectedHeaderField, [expectedValue])](#ApiTest+expectResponseHeaders) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectSend(expectedValue)](#ApiTest+expectSend) ⇒ [<code>ApiTest</code>](#ApiTest)
     * [.expectSendFile(expectedPath, [expectedOptions], [expectedFn])](#ApiTest+expectSendFile) ⇒ [<code>ApiTest</code>](#ApiTest)
@@ -487,6 +488,18 @@ Expect res.redirect was called
 | --- | --- | --- |
 | [expectedStatus] | <code>number</code> | Expected redirect status |
 | expectedPath | <code>string</code> | Expected redirect path |
+
+<a name="ApiTest+expectRender"></a>
+
+### apiTest.expectRender(expectedTemplate, expectedParams) ⇒ [<code>ApiTest</code>](#ApiTest)
+Expect res.render was called
+
+**Kind**: instance method of [<code>ApiTest</code>](#ApiTest)  
+
+| Param | Type |
+| --- | --- |
+| expectedTemplate | <code>string</code> | 
+| expectedParams | <code>Object</code> | 
 
 <a name="ApiTest+expectResponseHeaders"></a>
 
