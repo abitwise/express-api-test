@@ -2,7 +2,7 @@
   "author": "Olger Oeselg <olger.oeselg@gmail.com> (http://www.github.com/abitwise)",
   "name": "express-api-test",
   "description": "Express.js API Testing Utility",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "homepage": "https://github.com/abitwise/express-api-test",
   "bugs": {
     "url": "https://github.com/abitwise/express-api-test/issues"
@@ -41,7 +41,7 @@
     "@babel/cli": "^7.1.2",
     "@babel/core": "^7.1.2",
     "@babel/preset-env": "^7.1.0",
-    "eslint": "^5.7.0",
+    "eslint": "^5.8.0",
     "http-status-codes": "^1.3.0",
     "istanbul": "^0.4.5",
     "jsdoc": "^3.5.5",

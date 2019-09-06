@@ -137,6 +137,25 @@ ApiTest.prototype.setCookies = function (cookies) {
 }
 
 /**
+ * Set new custom parameter under req
+ * @example
+ * For req.audit = value
+ * Use:
+ * {
+ *   name: 'audit',
+ *   value: { anything: true }
+ * }
+ *
+ * @param {Object} custom
+ * @returns {ApiTest}
+ */
+ApiTest.prototype.setCustom = function (custom) {
+  this.req[custom.name] = custom.value
+
+  return this
+}
+
+/**
  * Set fresh
  *
  * @param {boolean} fresh - Is fresh request?
