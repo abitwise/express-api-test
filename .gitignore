@@ -3,6 +3,7 @@
 
 # Ignore code coverage
 coverage
+.nyc_output
 
 # OS X
 .DS_Store*
