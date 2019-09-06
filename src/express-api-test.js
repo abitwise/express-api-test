@@ -22,7 +22,7 @@ const expect = require('chai').expect
  * @constructor
  * @param {function} apiMethod - API method
  */
-let ApiTest = function (apiMethod) {
+const ApiTest = function (apiMethod) {
   this.api = apiMethod
   this.called = []
   this.req = {
@@ -45,15 +45,15 @@ let ApiTest = function (apiMethod) {
     end: () => this.res,
     format: (obj) => {
       if (this.req.headers && this.req.headers.accept) {
-        let fn = obj[this.req.headers.accept]
+        const fn = obj[this.req.headers.accept]
 
         if (fn) {
           fn()
         } else {
-          obj['default']()
+          obj.default()
         }
       } else {
-        obj['default']()
+        obj.default()
       }
 
       return this.res
@@ -238,7 +238,7 @@ ApiTest.prototype.setOriginalUrl = function (originalUrl) {
 ApiTest.prototype.setParams = function (params) {
   this.req = {
     param: function (name) {
-      if (params.hasOwnProperty(name)) {
+      if (Object.prototype.hasOwnProperty.call(params, name)) {
         return params[name]
       }
 
@@ -303,7 +303,7 @@ ApiTest.prototype.setSwaggerParams = function (params) {
     params: {}
   }
 
-  for (let key in params) {
+  for (const key in params) {
     this.req.swagger.params[key] = { value: params[key] }
   }
 
@@ -748,7 +748,7 @@ ApiTest.prototype.expectRender = function (expectedTemplate, expectedParams) {
  * @returns {ApiTest}
  */
 ApiTest.prototype.expectResponseHeaders = function (expectedHeaderField, expectedValue) {
-  let self = this
+  const self = this
 
   const singleSet = function (expectedHeaderField, expectedValue) {
     self.called.push(new Promise((resolve, reject) => {

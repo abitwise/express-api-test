@@ -39,19 +39,19 @@ describe('ApiTest', () => {
   ].forEach(unitTest => {
     describe(unitTest.method, () => {
       it(util.format('should set %s', unitTest.expectedSetParameter), async () => {
-        let test = new ApiTest(testApi.emptyApi)
+        const test = new ApiTest(testApi.emptyApi)
 
         await expect(test).to.have.property(unitTest.method).which.is.a('function')
         test[unitTest.method](unitTest.value)
 
-        if (unitTest.hasOwnProperty('expectedSetParameter')) {
-          let actualValue = _.get(test, unitTest.expectedSetParameter)
+        if (Object.prototype.hasOwnProperty.call(unitTest, 'expectedSetParameter')) {
+          const actualValue = _.get(test, unitTest.expectedSetParameter)
           await expect(actualValue).to.deep.equal(unitTest.value)
         }
 
-        if (unitTest.hasOwnProperty('expectedSetParameters')) {
+        if (Object.prototype.hasOwnProperty.call(unitTest, 'expectedSetParameters')) {
           unitTest.expectedSetParameters.forEach(expectedSetParameter => {
-            let actualValue = _.get(test, expectedSetParameter)
+            const actualValue = _.get(test, expectedSetParameter)
 
             return expect(actualValue).to.deep.equal(unitTest.value)
           })
@@ -62,12 +62,12 @@ describe('ApiTest', () => {
 
   describe('setCustom', () => {
     it('should set custom req parameter', async () => {
-      let entry = {
+      const entry = {
         name: 'audit',
         value: { anything: true }
       }
 
-      let test = new ApiTest(testApi.emptyApi)
+      const test = new ApiTest(testApi.emptyApi)
         .setCustom(entry)
 
       await expect(test.req).to.have.property(entry.name)
@@ -77,8 +77,8 @@ describe('ApiTest', () => {
 
   describe('setParams', () => {
     it('should set req.params', async () => {
-      let params = { test: '123' }
-      let test = new ApiTest(testApi.emptyApi)
+      const params = { test: '123' }
+      const test = new ApiTest(testApi.emptyApi)
         .setParams(params)
 
       await expect(test.req.params).to.deep.equal(params)
@@ -90,15 +90,15 @@ describe('ApiTest', () => {
     it('should set req.header', async () => {
       const headers = {
         'Content-Type': 'text/plain',
-        'Something': 'nice'
+        Something: 'nice'
       }
 
-      let test = new ApiTest(testApi.emptyApi)
+      const test = new ApiTest(testApi.emptyApi)
         .setRequestHeaders(headers)
 
       await expect(test.req.headers).to.deep.equals({
         'content-type': 'text/plain',
-        'something': 'nice'
+        something: 'nice'
       })
 
       await expect(test.req.get('Content-Type')).to.equal('text/plain')
@@ -110,12 +110,12 @@ describe('ApiTest', () => {
 
   describe('setSwaggerParams', () => {
     it('should set req.swagger.params', async () => {
-      let params = {
+      const params = {
         foo: 'bar',
         numberFoo: 5
       }
 
-      let test = new ApiTest(testApi.emptyApi)
+      const test = new ApiTest(testApi.emptyApi)
         .setSwaggerParams(params)
 
       await expect(test.req.swagger).to.be.an('Object')
@@ -153,13 +153,13 @@ describe('ApiTest', () => {
     { method: 'expectStatus', value: HttpStatus.OK, expectedFunctions: ['res.status'] },
     { method: 'expectRedirect', values: [301, 'http://example.com'], expectedFunctions: ['res.redirect'] },
     { method: 'expectRedirect', value: 'http://example.com', expectedFunctions: ['res.redirect'] },
-    { method: 'expectRender', values: [ 'hello', { name: 'John' }, () => {} ], expectedFunctions: ['res.render'] },
+    { method: 'expectRender', values: ['hello', { name: 'John' }, () => {}], expectedFunctions: ['res.render'] },
     {
       method: 'expectResponseHeaders',
       value: {
         'Content-Type': 'text/plain',
         'Content-Length': '123',
-        'ETag': '12345'
+        ETag: '12345'
       },
       calledLength: 3,
       expectedFunctions: ['res.set', 'res.get']
@@ -177,7 +177,7 @@ describe('ApiTest', () => {
       )
 
       it(itMessage, async () => {
-        let test = new ApiTest(testApi.apiWithParams)
+        const test = new ApiTest(testApi.apiWithParams)
           .setParams({ test: '123' })
 
         expect(test[unitTest.method]).to.be.a('function')
@@ -188,8 +188,8 @@ describe('ApiTest', () => {
           test[unitTest.method](unitTest.value)
         }
 
-        for (let key in unitTest.expectedFunctions) {
-          let expectedParameter = _.get(test, unitTest.expectedFunctions[key])
+        for (const key in unitTest.expectedFunctions) {
+          const expectedParameter = _.get(test, unitTest.expectedFunctions[key])
 
           await expect(expectedParameter).to.be.a('function')
           await expect(test.called).to.be.an('array')
@@ -202,10 +202,10 @@ describe('ApiTest', () => {
 
   describe('run', () => {
     it('should call api and wait for all promises', async () => {
-      let mockApi = sandbox.stub()
-      let test = new ApiTest(mockApi)
-      let expectedReq = test.req
-      let expectedRes = test.res
+      const mockApi = sandbox.stub()
+      const test = new ApiTest(mockApi)
+      const expectedReq = test.req
+      const expectedRes = test.res
 
       await test.run()
       await expect(mockApi).to.have.been.calledWith(expectedReq, expectedRes)

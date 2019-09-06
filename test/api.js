@@ -66,7 +66,7 @@ function apiWithFormat (req, res) {
       res.send({ message: 'hey' })
     },
 
-    'default': () => {
+    default: () => {
       res.status(406).send('Not Acceptable')
     }
   })
